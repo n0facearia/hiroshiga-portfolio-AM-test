@@ -1,0 +1,210 @@
+{
+  "instructions": "Download each URL and save to public/artworks/<filename>. Then run: npm run db:update-urls",
+  "artworks": [
+    {
+      "id": 1,
+      "title": "Sudden Shower over Shin-Ōhashi Bridge and Atake",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/65/Hiroshige_Utagawa_-_Shower_Over_the_O-hashi_Atake.jpg",
+      "filename": "Hiroshige_Utagawa_-_Shower_Over_the_O-hashi_Atake.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Plum Park in Kameido",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/db/Hiroshige_Pruneraie_%C3%A0_Kameido.jpg",
+      "filename": "Hiroshige_Pruneraie_%C3%A0_Kameido.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Night Snow at Kambara",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Hiroshige-53-Stations-Hoeido-16-Kanbara-MFA-01.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-16-Kanbara-MFA-01.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Naruto Whirlpool in Awa Province",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Awa%2C_Naruto_Whirlpools%2C_ca_1855.jpg",
+      "filename": "Awa%2C_Naruto_Whirlpools%2C_ca_1855.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Fireworks at Ryōgoku",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Famous_Places_of_Edo_%28Fireworks_at_Ryogoku%29%2C_by_Utagawa_Hiroshige%2C_Japan%2C_Edo_period%2C_1800s_AD%2C_woodblock_print_on_paper_-_Tokyo_National_Museum_-_Tokyo%2C_Japan_-_DSC09279.jpg",
+      "filename": "Famous_Places_of_Edo_Fireworks_at_Ryogoku.jpg"
+    },
+    {
+      "id": 6,
+      "title": "Kinryūzan Temple at Asakusa",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Asakusa_kinry%C5%ABzan_LCCN2008660649.jpg",
+      "filename": "Asakusa_kinry%C5%ABzan_LCCN2008660649.jpg"
+    },
+    {
+      "id": 7,
+      "title": "Spiral Hall at Five Hundred Rakan Temple",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/100_views_edo_070.jpg",
+      "filename": "100_views_edo_070.jpg"
+    },
+    {
+      "id": 8,
+      "title": "Tsukudajima in Musashi Province",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Tsukudajima_sumiyoshi_no_matsuri_LCCN2009631888.jpg",
+      "filename": "Tsukudajima_sumiyoshi_no_matsuri_LCCN2009631888.jpg"
+    },
+    {
+      "id": 9,
+      "title": "Kambara: Evening Snow",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Hiroshige-53-Stations-Hoeido-16-Kanbara-MFA-01.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-16-Kanbara-MFA-01.jpg"
+    },
+    {
+      "id": 10,
+      "title": "Shōno: Driving Rain",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Hiroshige-53-Stations-Hoeido-46-Shono-Edo-Tokyo-M-01.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-46-Shono-Edo-Tokyo-M-01.jpg"
+    },
+    {
+      "id": 11,
+      "title": "Nihonbashi: Morning View",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Hiroshige-53-Stations-Hoeido-01-Nihonbashi-BM-01.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-01-Nihonbashi-BM-01.jpg"
+    },
+    {
+      "id": 12,
+      "title": "Hodogaya: View of the Distant Mountain",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Hiroshige-53-Stations-Hoeido-05-Hodogaya-BM-01.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-05-Hodogaya-BM-01.jpg"
+    },
+    {
+      "id": 13,
+      "title": "Fujisawa: Yugyō-ji Temple",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Hiroshige-53-Stations-Hoeido-07-Fujisawa-BM.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-07-Fujisawa-BM.jpg"
+    },
+    {
+      "id": 14,
+      "title": "Odawara: The Sakawa River",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Hiroshige-53-Stations-Hoeido-10-Odawara-BM-02.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-10-Odawara-BM-02.jpg"
+    },
+    {
+      "id": 15,
+      "title": "Hara: Mount Fuji at Dawn",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Hiroshige-53-Stations-Hoeido-14-Hara-MFA-01.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-14-Hara-MFA-01.jpg"
+    },
+    {
+      "id": 16,
+      "title": "Yoshida: The Bridge over the Toyokawa River",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Hiroshige-53-Stations-Hoeido-35-Yoshida-Tokyo-Met-03.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-35-Yoshida-Tokyo-Met-03.jpg"
+    },
+    {
+      "id": 17,
+      "title": "Mariko: A Famous Tea House",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/0/0b/Hiroshige-53-Stations-Hoeido-21-Mariko-Honolulu-02.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-21-Mariko-Honolulu-02.jpg"
+    },
+    {
+      "id": 18,
+      "title": "Kanaya: The Ōi River",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/Hiroshige-53-Stations-Hoeido-25-Kanaya-Honululu-01.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-25-Kanaya-Honululu-01.jpg"
+    },
+    {
+      "id": 19,
+      "title": "Akasaka: The Night Lodging",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hiroshige-53-Stations-Hoeido-37-Akasaka-MFA-01.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-37-Akasaka-MFA-01.jpg"
+    },
+    {
+      "id": 20,
+      "title": "Yokkaichi: The Harbor",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/Hiroshige-53-Stations-Hoeido-44-Yokkaichi-Honolulu-02.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-44-Yokkaichi-Honolulu-02.jpg"
+    },
+    {
+      "id": 21,
+      "title": "Minakuchi: The Post Town",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/Hiroshige-53-Stations-Hoeido-51-Minakuchi-MFA-02.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-51-Minakuchi-MFA-02.jpg"
+    },
+    {
+      "id": 22,
+      "title": "Kyōto: The Great Bridge",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/60/Hiroshige-53-Stations-Hoeido-55-Kyoto-MFA-01.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-55-Kyoto-MFA-01.jpg"
+    },
+    {
+      "id": 23,
+      "title": "Mishima: Morning Mist",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Hiroshige-53-Stations-Hoeido-12-Mishima-MFA-02.jpg",
+      "filename": "Hiroshige-53-Stations-Hoeido-12-Mishima-MFA-02.jpg"
+    },
+    {
+      "id": 24,
+      "title": "Mannen Bridge at Fukagawa",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/100_views_edo_051.jpg",
+      "filename": "100_views_edo_051.jpg"
+    },
+    {
+      "id": 25,
+      "title": "Evening View of Saruwaka Street",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Hiroshige%2C_Night_View_of_Saruwaka-machi.jpg",
+      "filename": "Hiroshige_Night_View_of_Saruwaka-machi.jpg"
+    },
+    {
+      "id": 26,
+      "title": "Suijin Shrine and Massaki on the Sumida River",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/100_views_edo_035.jpg",
+      "filename": "100_views_edo_035.jpg"
+    },
+    {
+      "id": 27,
+      "title": "Cherry Blossoms at Nakano",
+      "search": "https://commons.wikimedia.org/w/index.php?search=Hiroshige+Nakano+cherry"
+    },
+    {
+      "id": 28,
+      "title": "Hiratsuka: Distant View of Mount Fuji",
+      "search": "https://commons.wikimedia.org/w/index.php?search=Hiroshige+Hiratsuka+Edo"
+    },
+    {
+      "id": 29,
+      "title": "View of the Sumida River from Surugadai",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Suid%C5%8Dbashi_surugadai_LCCN2008660969.jpg",
+      "filename": "Suid%C5%8Dbashi_surugadai_LCCN2008660969.jpg"
+    },
+    {
+      "id": 30,
+      "title": "Asakusa Rice Fields",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/51/Asakusa_Rice_Fields_and_Festival_of_Torinomachi_LACMA_M.66.35.8.jpg",
+      "filename": "Asakusa_Rice_Fields_and_Festival_of_Torinomachi_LACMA_M.66.35.8.jpg"
+    },
+    {
+      "id": 31,
+      "title": "Moon Pine at Ueno",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/fb/100_views_edo_089.jpg",
+      "filename": "100_views_edo_089.jpg"
+    },
+    {
+      "id": 32,
+      "title": "Sarushima: The Island Temple in Sagami Province",
+      "search": "https://commons.wikimedia.org/w/index.php?search=Hiroshige+Sarushima"
+    },
+    {
+      "id": 33,
+      "title": "Mount Fuji from Ikeda in Izumi Province",
+      "search": "https://commons.wikimedia.org/w/index.php?search=Hiroshige+Izumi+Ikeda+Fuji"
+    },
+    {
+      "id": 34,
+      "title": "Kagoshima: Sakurajima in Satsuma Province",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Osumi_Province%2C_Sakura_shima_%285768348451%29.jpg",
+      "filename": "Osumi_Province_Sakura_shima.jpg"
+    },
+    {
+      "id": 35,
+      "title": "Abura Kannon in Nagato Province",
+      "search": "https://commons.wikimedia.org/w/index.php?search=Hiroshige+Abura+Kannon"
+    }
+  ]
+}

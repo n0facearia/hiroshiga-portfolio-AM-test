@@ -1,0 +1,305 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Light mode (default) ─── */
+
+:root {
+  /* Hex values — for CSS gradients and direct var() references */
+  --sumi: #1A1A1A;
+  --sumi-deep: #2C2C28;
+  --washi: #F5F0E8;
+  --washi-light: #E8E3DA;
+  --washi-medium: #D4CFC4;
+  --vermillion: #C0392B;
+  --gold: #C9A84C;
+  --mist: #766C62;
+  --error: #B73229;
+  --success: #2D6B3E;
+  --info: #4A6E8C;
+
+  /* RGB triplets — for Tailwind opacity support (e.g. bg-sumi/80) */
+  --sumi-rgb: 26, 26, 26;
+  --sumi-deep-rgb: 44, 44, 40;
+  --washi-rgb: 245, 240, 232;
+  --washi-light-rgb: 232, 227, 218;
+  --washi-medium-rgb: 212, 207, 196;
+  --vermillion-rgb: 192, 57, 43;
+  --gold-rgb: 201, 168, 76;
+  --mist-rgb: 118, 108, 98;
+  --error-rgb: 183, 50, 41;
+  --success-rgb: 45, 107, 62;
+  --info-rgb: 74, 110, 140;
+
+  /* Ink wash background — layered radial gradients */
+  --ink-bg:
+    radial-gradient(ellipse 80% 60% at 0% 20%, rgba(var(--sumi-rgb), 0.03) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 100% 80%, rgba(var(--sumi-rgb), 0.02) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 50% 0%, rgba(var(--sumi-rgb), 0.04) 0%, transparent 50%),
+    rgb(var(--washi-rgb));
+}
+
+/* ─── Dark mode ─── */
+
+.dark {
+  --sumi: #E8E3DA;
+  --sumi-deep: #D4CFC4;
+  --washi: #1A1A14;
+  --washi-light: #2C2824;
+  --washi-medium: #3D3832;
+  --vermillion: #E85A4A;
+  --gold: #D4B85C;
+  --mist: #8A8278;
+  --error: #E05541;
+  --success: #4A9E5E;
+  --info: #7BA0C7;
+
+  --sumi-rgb: 232, 227, 218;
+  --sumi-deep-rgb: 212, 207, 196;
+  --washi-rgb: 26, 26, 20;
+  --washi-light-rgb: 44, 40, 36;
+  --washi-medium-rgb: 61, 56, 50;
+  --vermillion-rgb: 232, 90, 74;
+  --gold-rgb: 212, 184, 92;
+  --mist-rgb: 138, 130, 120;
+  --error-rgb: 224, 85, 65;
+  --success-rgb: 74, 158, 94;
+  --info-rgb: 123, 160, 199;
+
+  --ink-bg:
+    radial-gradient(ellipse 80% 60% at 0% 20%, rgba(var(--washi-rgb), 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 100% 80%, rgba(var(--washi-rgb), 0.03) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 50% 0%, rgba(var(--washi-rgb), 0.05) 0%, transparent 50%),
+    rgb(var(--washi-rgb));
+}
+
+/* ─── Base styles ─── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink-bg);
+  color: var(--sumi);
+  font-family: var(--font-body), sans-serif;
+  cursor: default;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ─── Ink-ring focus outline ─── */
+
+*:focus-visible {
+  outline: 2px solid var(--vermillion);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ─── Custom scrollbar — ink-wash style ─── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--washi-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--washi-medium);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mist);
+}
+
+/* ─── Selection color ─── */
+
+::selection {
+  background: var(--vermillion);
+  color: var(--washi);
+}
+
+/* ─── Reduced motion ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Custom cursor canvas ─── */
+
+#cursor-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── DaisyUI component overrides ─── */
+
+.btn {
+  @apply border text-sumi bg-transparent hover:bg-ink-wash rounded-ink px-6 py-2 text-sm uppercase tracking-widest transition-all duration-fast;
+  border-color: var(--sumi);
+}
+
+.btn:hover {
+  background: rgba(var(--sumi-rgb), 0.06);
+}
+
+.btn-primary {
+  border-color: var(--vermillion);
+  color: var(--vermillion);
+}
+
+.btn-primary:hover {
+  background: rgba(var(--vermillion-rgb), 1);
+  color: var(--washi);
+}
+
+.btn-ghost {
+  border-color: transparent;
+}
+
+.btn-ghost:hover {
+  background: rgba(var(--sumi-rgb), 0.06);
+}
+
+.card {
+  background: rgb(var(--washi-rgb));
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(var(--sumi-rgb), 0.06);
+}
+
+.input,
+.textarea {
+  border: 0;
+  border-bottom: 2px solid var(--washi-medium);
+  background: transparent;
+  border-radius: 0;
+  padding: 0.5rem 0;
+  color: var(--sumi);
+  transition: border-color 200ms ease;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--mist);
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--vermillion);
+  outline: none;
+  box-shadow: none;
+}
+
+.modal-box {
+  background: rgb(var(--washi-rgb));
+  border-radius: 4px;
+}
+
+.badge {
+  border: 1px solid var(--sumi);
+  color: var(--sumi);
+  background: transparent;
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Dark mode DaisyUI overrides ─── */
+
+.dark .btn {
+  border-color: var(--sumi);
+  color: var(--sumi);
+}
+
+.dark .btn-primary {
+  border-color: var(--vermillion);
+  color: var(--vermillion);
+}
+
+.dark .btn-primary:hover {
+  background: rgba(var(--vermillion-rgb), 1);
+  color: rgb(var(--washi-rgb));
+}
+
+.dark .card {
+  background: rgb(var(--washi-light-rgb));
+  box-shadow: 0 1px 2px rgba(var(--washi-rgb), 0.08);
+}
+
+.dark .modal-box {
+  background: rgb(var(--washi-light-rgb));
+}
+
+/* ─── Ink background utility ─── */
+
+.ink-bg {
+  background: var(--ink-bg);
+}
+
+/* ─── Kakejiku card ─── */
+
+.kakejiku {
+  background: rgb(var(--washi-rgb));
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(var(--sumi-rgb), 0.08);
+}
+
+.kakejiku-rod-top {
+  height: 0.5rem;
+  width: 100%;
+  background: linear-gradient(180deg, var(--sumi-deep) 0%, color-mix(in srgb, var(--sumi-deep) 70%, var(--washi-light)) 50%, var(--sumi-deep) 100%);
+}
+
+.kakejiku-rod-bottom {
+  height: 0.5rem;
+  width: 100%;
+  background: linear-gradient(0deg, var(--sumi-deep) 0%, color-mix(in srgb, var(--sumi-deep) 70%, var(--washi-light)) 50%, var(--sumi-deep) 100%);
+}
+
+.kakejiku-mounting {
+  padding: 0.25rem 0.5rem;
+  background: rgb(var(--washi-rgb));
+  border: 1px solid var(--washi-medium);
+}
+
+.dark .kakejiku {
+  box-shadow: 0 2px 12px rgba(var(--washi-rgb), 0.08);
+}
+
+.dark .kakejiku-mounting {
+  border-color: var(--washi-medium);
+  background: rgb(var(--washi-rgb));
+}
+
+/* ─── Text utilities ─── */
+
+.text-title {
+  font-family: var(--font-display), Georgia, serif;
+  color: var(--sumi);
+}
+
+.text-title-jp {
+  font-family: var(--font-display-jp), serif;
+  color: var(--sumi);
+}
+
+/* ─── Theme toggle transition (prevent flash) ─── */
+
+html.dark {
+  color-scheme: dark;
+}
