@@ -2,7 +2,7 @@ import { getFeaturedArtworks } from '@/lib/artworks'
 import { getArtistInfo } from '@/lib/artworks'
 import { InkBackground } from '@/components/InkBackground'
 import { HeroParallax } from '@/components/HeroParallax'
-import { KakejikuCard } from '@/components/KakejikuCard'
+import { HomeGalleryClient } from '@/components/HomeGalleryClient'
 import { BrushstrokeDivider } from '@/components/BrushstrokeDivider'
 import { BrushstrokeUnderline } from '@/components/BrushstrokeUnderline'
 
@@ -37,16 +37,7 @@ export default async function HomePage() {
           <div className="w-12 h-px bg-vermillion mx-auto mt-4" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {gridArtworks.map((artwork, index) => (
-            <KakejikuCard
-              key={artwork.id}
-              artwork={artwork}
-              index={index}
-              tiltOnScroll
-            />
-          ))}
-        </div>
+        <HomeGalleryClient artworks={gridArtworks} />
       </section>
 
       <BrushstrokeDivider variant="wave" />
@@ -66,7 +57,7 @@ export default async function HomePage() {
             <p className="font-body text-xs text-mist uppercase tracking-widest mt-1">
               {artist.birth_year} — {artist.death_year}
             </p>
-            <p className="font-body text-sm text-sumi/80 mt-4 leading-relaxed">
+            <p className="font-body text-sm text-sumi mt-4 leading-relaxed">
               {artist.bio}
             </p>
             <div className="mt-6">
@@ -109,10 +100,10 @@ export default async function HomePage() {
             <p className="font-body text-xs text-mist mt-2">
               1833 — 1834
             </p>
-            <p className="font-body text-sm text-sumi/70 mt-4 leading-relaxed">
-              Hiroshige&apos;s most celebrated series, capturing each post station along the
-              Tōkaidō road connecting Edo and Kyoto.
-            </p>
+            <p className="font-body text-sm text-sumi mt-4 leading-relaxed">
+               Hiroshige&apos;s most celebrated series, capturing each post station along the
+               Tōkaidō road connecting Edo and Kyoto.
+             </p>
             <div className="mt-6">
               <BrushstrokeUnderline>
                 <a
@@ -136,10 +127,10 @@ export default async function HomePage() {
             <p className="font-body text-xs text-mist mt-2">
               1856 — 1858
             </p>
-            <p className="font-body text-sm text-sumi/70 mt-4 leading-relaxed">
-              Hiroshige&apos;s final masterpiece — 100 woodblock prints depicting
-              scenes from Edo (Tokyo) across all four seasons.
-            </p>
+            <p className="font-body text-sm text-sumi mt-4 leading-relaxed">
+               Hiroshige&apos;s final masterpiece — 100 woodblock prints depicting
+               scenes from Edo (Tokyo) across all four seasons.
+             </p>
             <div className="mt-6">
               <BrushstrokeUnderline>
                 <a

@@ -103,7 +103,7 @@ export function ContactForm() {
         >
           <span className="font-accent text-3xl text-vermillion">承</span>
         </motion.div>
-        <p className="font-body text-sm text-sumi/80">
+        <p className="font-body text-sm text-sumi">
           受信しました
         </p>
         <p className="font-body text-xs text-mist mt-2">
@@ -121,13 +121,6 @@ export function ContactForm() {
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
     >
-      <h2 className="font-display text-2xl md:text-3xl text-sumi mb-2 text-center">
-        Get in Touch
-      </h2>
-      <p className="font-body text-xs text-mist text-center mb-8 tracking-wider">
-        お問い合わせ
-      </p>
-
       <form onSubmit={handleSubmit} noValidate className="space-y-6">
         {/* Name */}
         <motion.div

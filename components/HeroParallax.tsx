@@ -91,10 +91,10 @@ export function HeroParallax({ artworks }: HeroParallaxProps) {
           {/* Blurred backdrop behind title text — enhances readability
               in both themes (warm glow in light mode, contrast shield in dark) */}
           <motion.div
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-xl aspect-[3/2] pointer-events-none"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-2xl aspect-[4/3] pointer-events-none"
             style={{
-              background: 'radial-gradient(ellipse, rgba(var(--washi-rgb), 0.30) 0%, rgba(var(--washi-rgb), 0.12) 40%, transparent 60%)',
-              filter: 'blur(40px)',
+              background: 'radial-gradient(ellipse, rgba(var(--washi-rgb), 0.85) 0%, rgba(var(--washi-rgb), 0.50) 30%, rgba(var(--washi-rgb), 0.20) 60%, transparent 75%)',
+              filter: 'blur(30px)',
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -137,7 +137,7 @@ export function HeroParallax({ artworks }: HeroParallaxProps) {
 
           {/* Subtitle */}
           <motion.p
-            className="font-body text-xs md:text-sm text-mist mt-6 tracking-[0.15em] uppercase"
+            className="font-body text-xs md:text-sm text-sumi mt-6 tracking-[0.15em] uppercase"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 2 }}
@@ -154,7 +154,7 @@ export function HeroParallax({ artworks }: HeroParallaxProps) {
               transition={{ duration: 0.8, delay: 2.5 }}
             >
               <div className="flex flex-col items-center gap-2">
-                <span className="text-[10px] text-mist uppercase tracking-[0.2em] font-body">
+                <span className="text-[10px] text-sumi uppercase tracking-[0.2em] font-body">
                   Scroll
                 </span>
                 <motion.div

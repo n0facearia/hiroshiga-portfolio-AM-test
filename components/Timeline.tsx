@@ -74,7 +74,7 @@ export function Timeline({ events }: TimelineProps) {
 
               {/* Event text */}
               <div className="md:w-1/2 pl-0 md:pl-0">
-                <p className="font-body text-sm text-sumi/80 leading-relaxed">
+                <p className="font-body text-sm text-sumi leading-relaxed">
                   {event.event}
                 </p>
               </div>

@@ -108,7 +108,7 @@ export function Lightbox({
 
           {/* Info panel */}
           <div className="w-full md:w-2/5 p-6 md:p-8 overflow-y-auto flex flex-col justify-center">
-            <span className="text-xs text-mist uppercase tracking-widest font-body">
+            <span className="text-xs text-sumi uppercase tracking-widest font-body">
               {artwork.series}
               {' · '}
               {artwork.year}
@@ -117,14 +117,14 @@ export function Lightbox({
               {artwork.title}
             </h2>
             {artwork.title_jp && (
-              <p className="font-accent text-base text-mist mt-1">{artwork.title_jp}</p>
+              <p className="font-accent text-base text-sumi mt-1">{artwork.title_jp}</p>
             )}
-            <p className="font-body text-sm text-sumi/80 mt-4 leading-relaxed">
+            <p className="font-body text-sm text-sumi mt-4 leading-relaxed">
               {artwork.description}
             </p>
 
             {/* Counter */}
-            <p className="text-xs text-mist mt-6">
+            <p className="text-xs text-sumi mt-6">
               {currentIndex + 1} / {total}
             </p>
 
@@ -149,7 +149,7 @@ export function Lightbox({
             </div>
 
             {/* Wikimedia attribution */}
-            <p className="text-xs text-mist/60 mt-6 leading-relaxed">
+            <p className="text-xs text-sumi mt-6 leading-relaxed">
               Image courtesy of{' '}
               <BrushstrokeUnderline>
                 <a

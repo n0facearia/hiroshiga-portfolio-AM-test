@@ -52,7 +52,7 @@ export function BioSection({ name, bio, birthYear, deathYear }: BioSectionProps)
           </p>
 
           {/* Bio */}
-          <div className="font-body text-sm md:text-base text-sumi/80 leading-relaxed space-y-4">
+          <div className="font-body text-sm md:text-base text-sumi leading-relaxed space-y-4">
             {bio.split('\n').map((paragraph, i) => (
               <p key={i}>{paragraph}</p>
             ))}

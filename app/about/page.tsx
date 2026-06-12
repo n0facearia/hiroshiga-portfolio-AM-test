@@ -49,7 +49,7 @@ export default async function AboutPage() {
 
         {/* Wikimedia credits */}
         <section className="max-w-3xl mx-auto px-6 md:px-12 py-12 text-center">
-          <p className="font-body text-xs text-mist/60 leading-relaxed">
+          <p className="font-body text-xs text-mist leading-relaxed">
             All artwork images are sourced from{' '}
             <BrushstrokeUnderline>
               <a
