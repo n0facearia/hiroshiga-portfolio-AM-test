@@ -48,7 +48,7 @@ The entire process — from blank canvas to deployed site — was driven through
 ### 2.5D Parallax Hero Scene
 Six illustrated layers at different perspective depths create a diorama effect — distant mountains, clouds, waves, pine branch, and a vermillion seal — with mouse-driven parallax rotation and floating artwork cards.
 
-![Hero parallax layers and floating artwork cards](./screenshots/hero-layers.png)
+![Hero parallax layers and floating artwork cards](./screenshots/hero-parallax.png)
 
 ### Kakejiku (Hanging Scroll) Cards
 Japanese scroll aesthetic with wooden rods, mounting borders, and a tripartite hover animation: parallax tilt + ink-wash ripple + vermillion seal stamp bloom.
@@ -199,22 +199,6 @@ The sumi-e palette uses CSS custom properties with both hex values and RGB tripl
 **Typography:** EB Garamond (display), Noto Serif JP (Japanese headings), Noto Sans JP (body), Yuji Syuku (accent).
 
 **Key rule:** Vermillion is text/border only (never background fill). Gold is decorative-only (never text).
-
----
-
-## Adding Screenshots
-
-The screenshots referenced above (in `screenshots/`) need to be captured from the running app. To generate them:
-
-1. Run `npm run dev` and open `http://localhost:3000`
-2. Capture the following views at 1920×1080 (or similar desktop resolution):
-   - **Hero parallax** — the full hero section on the homepage
-   - **Kakejiku hover** — hover over a featured artwork card
-   - **Lightbox viewer** — click an artwork to open the lightbox
-   - **Gallery filter** — the `/work` page with a filter selected
-   - **Contact form** — the `/about` page scrolled to the contact form
-   - **Dark mode** — toggle dark mode and capture any page
-3. Place images in `screenshots/` matching the filenames in the README
 
 ---
 
