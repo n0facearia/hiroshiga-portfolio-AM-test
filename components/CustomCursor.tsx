@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 interface Drop {
   x: number
@@ -13,21 +14,24 @@ interface Drop {
 
 export function CustomCursor() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const reduced = useReducedMotion()
   const isTouch = useMediaQuery('(hover: none) and (pointer: coarse)')
   const [ready, setReady] = useState(false)
 
-  // Defer canvas creation until after initial paint
+  // All hooks must be called unconditionally at the top level.
+  // Defer canvas creation until after initial paint.
   useEffect(() => {
+    if (reduced) return // early skip inside hook — still counts as called
     const id = requestIdleCallback(() => setReady(true))
     const fallback = setTimeout(() => setReady(true), 300)
     return () => {
       cancelIdleCallback(id)
       clearTimeout(fallback)
     }
-  }, [])
+  }, [reduced])
 
   useEffect(() => {
-    if (isTouch || !ready) return
+    if (reduced || isTouch || !ready) return
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -113,8 +117,10 @@ export function CustomCursor() {
       window.removeEventListener('mousemove', handleMouseMove)
       cancelAnimationFrame(rafId)
     }
-  }, [isTouch, ready])
+  }, [reduced, isTouch, ready])
 
+  // Don't render on reduced motion or touch devices after hooks are called.
+  if (reduced) return null
   if (isTouch) return null
   if (!ready) return null
 

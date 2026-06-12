@@ -1,0 +1,131 @@
+<!--
+  Layer 2: Waves / Water (波 / Nami)
+  Z-index: 3 | translateZ: -200px | Scroll speed: 0.3x
+  Purpose: Mid-ground water with stylized ukiyo-e wave motifs
+  Style: Geometric/curved wave patterns, flat indigo fills, sumi outlines, white crests
+  Palette: --sumi (outlines 15-25%), --washi (crest foam), plus indigo-blue accent for water body
+  Note: Indigo/Prussian blue (ベロ藍) was Hiroshige's signature color — we introduce it here
+        as a limited accent, not a full palette token. Use hex #4A6B8A (matches --info closely).
+-->
+<svg viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- WATER BODY — flat indigo wash -->
+  <rect x="0" y="430" width="1440" height="470" fill="rgba(90,122,154,0.06)" />
+
+  <!--
+    Wave construction:
+    Ukiyo-e waves use repeating claw-like curves.
+    Each wave has: curved body -> crest that curls over into spray dots.
+    We use 3-4 rows of waves at decreasing scale moving upward.
+  -->
+
+  <!-- ROW 1 — furthest waves (small, at top of water area) -->
+  <g stroke="rgba(42,37,32,0.12)" stroke-width="1" fill="none" stroke-linecap="round">
+    <path d="M0 440 Q20 435 40 440 Q60 445 80 440" />
+    <path d="M100 442 Q120 437 140 442 Q160 447 180 442" />
+    <path d="M200 438 Q220 433 240 438 Q260 443 280 438" />
+    <path d="M300 442 Q320 437 340 442 Q360 447 380 442" />
+    <path d="M400 440 Q420 435 440 440 Q460 445 480 440" />
+    <path d="M500 438 Q520 433 540 438 Q560 443 580 438" />
+    <path d="M600 442 Q620 437 640 442 Q660 447 680 442" />
+    <path d="M700 440 Q720 435 740 440 Q760 445 780 440" />
+    <path d="M800 438 Q820 433 840 438 Q860 443 880 438" />
+    <path d="M900 442 Q920 437 940 442 Q960 447 980 442" />
+    <path d="M1000 440 Q1020 435 1040 440 Q1060 445 1080 440" />
+    <path d="M1100 438 Q1120 433 1140 438 Q1160 443 1180 438" />
+    <path d="M1200 442 Q1220 437 1240 442 Q1260 447 1280 442" />
+    <path d="M1300 440 Q1320 435 1340 440 Q1360 445 1380 440" />
+    <path d="M1400 438 Q1420 433 1440 438" />
+  </g>
+
+  <!-- ROW 2 — medium waves -->
+  <g stroke="rgba(42,37,32,0.16)" stroke-width="1.2" fill="none" stroke-linecap="round">
+    <path d="M-20 465 Q10 455 40 465 Q70 475 100 465" />
+    <path d="M120 468 Q150 458 180 468 Q210 478 240 468" />
+    <path d="M260 463 Q290 453 320 463 Q350 473 380 463" />
+    <path d="M400 468 Q430 458 460 468 Q490 478 520 468" />
+    <path d="M540 465 Q570 455 600 465 Q630 475 660 465" />
+    <path d="M680 468 Q710 458 740 468 Q770 478 800 468" />
+    <path d="M820 463 Q850 453 880 463 Q910 473 940 463" />
+    <path d="M960 468 Q990 458 1020 468 Q1050 478 1080 468" />
+    <path d="M1100 465 Q1130 455 1160 465 Q1190 475 1220 465" />
+    <path d="M1240 468 Q1270 458 1300 468 Q1330 478 1360 468" />
+    <path d="M1380 463 Q1410 453 1440 463" />
+  </g>
+
+  <!-- ROW 3 — foreground waves (largest, most detailed) -->
+  <g stroke="rgba(42,37,32,0.20)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Wave 1 -->
+    <path d="M-30 500 Q20 480 70 500" />
+    <path d="M70 500 Q90 490 100 495 Q110 505 100 510" />
+    <!-- Wave 2 -->
+    <path d="M100 505 Q150 485 200 505" />
+    <path d="M200 505 Q220 495 230 500 Q240 510 230 515" />
+    <!-- Wave 3 -->
+    <path d="M230 510 Q280 490 330 510" />
+    <path d="M330 510 Q350 500 360 505 Q370 515 360 520" />
+    <!-- Wave 4 -->
+    <path d="M360 515 Q410 495 460 515" />
+    <path d="M460 515 Q480 505 490 510 Q500 520 490 525" />
+    <!-- Wave 5 -->
+    <path d="M490 520 Q540 500 590 520" />
+    <path d="M590 520 Q610 510 620 515 Q630 525 620 530" />
+    <!-- Wave 6 -->
+    <path d="M620 525 Q670 505 720 525" />
+    <path d="M720 525 Q740 515 750 520 Q760 530 750 535" />
+    <!-- Wave 7 -->
+    <path d="M750 530 Q800 510 850 530" />
+    <path d="M850 530 Q870 520 880 525 Q890 535 880 540" />
+    <!-- Wave 8 -->
+    <path d="M880 535 Q930 515 980 535" />
+    <path d="M980 535 Q1000 525 1010 530 Q1020 540 1010 545" />
+    <!-- Wave 9 -->
+    <path d="M1010 540 Q1060 520 1110 540" />
+    <path d="M1110 540 Q1130 530 1140 535 Q1150 545 1140 550" />
+    <!-- Wave 10 -->
+    <path d="M1140 545 Q1190 525 1240 545" />
+    <path d="M1240 545 Q1260 535 1270 540 Q1280 550 1270 555" />
+    <!-- Wave 11 -->
+    <path d="M1270 550 Q1320 530 1370 550" />
+    <path d="M1370 550 Q1390 540 1400 545 Q1410 555 1400 560" />
+  </g>
+
+  <!-- FOAM CRESTS — white spray dots at wave peaks -->
+  <g fill="rgba(239,232,213,0.6)">
+    <!-- Wave 1 crest -->
+    <circle cx="70" cy="498" r="2" />
+    <circle cx="80" cy="495" r="1.5" />
+    <circle cx="60" cy="496" r="1" />
+    <!-- Wave 3 crest -->
+    <circle cx="230" cy="503" r="2" />
+    <circle cx="240" cy="500" r="1.5" />
+    <circle cx="220" cy="501" r="1" />
+    <!-- Wave 5 crest -->
+    <circle cx="490" cy="512" r="2.5" />
+    <circle cx="500" cy="508" r="1.5" />
+    <circle cx="480" cy="510" r="1.5" />
+    <!-- Wave 7 crest -->
+    <circle cx="750" cy="522" r="2.5" />
+    <circle cx="760" cy="518" r="1.5" />
+    <circle cx="740" cy="520" r="1.5" />
+    <!-- Wave 9 crest -->
+    <circle cx="1010" cy="532" r="2" />
+    <circle cx="1020" cy="528" r="1.5" />
+    <circle cx="1000" cy="530" r="1" />
+    <!-- Wave 11 crest -->
+    <circle cx="1270" cy="542" r="2.5" />
+    <circle cx="1280" cy="538" r="1.5" />
+    <circle cx="1260" cy="540" r="1.5" />
+  </g>
+
+  <!-- SPRAY DROPLETS — fine mist above breaking waves -->
+  <g fill="rgba(239,232,213,0.35)">
+    <circle cx="70" cy="490" r="1" />
+    <circle cx="85" cy="488" r="0.75" />
+    <circle cx="490" cy="502" r="1" />
+    <circle cx="505" cy="500" r="0.75" />
+    <circle cx="750" cy="512" r="1" />
+    <circle cx="765" cy="510" r="0.75" />
+    <circle cx="1010" cy="522" r="1" />
+    <circle cx="1025" cy="520" r="0.75" />
+  </g>
+</svg>

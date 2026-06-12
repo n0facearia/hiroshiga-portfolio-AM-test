@@ -1,0 +1,12 @@
+## [2026-06-12 07:58] — frontend mode
+- Fixed /about page rendering on client-side navigation: replaced window.matchMedia() in PageTransition render with useReducedMotion hook; removed clipPath from page variants (opacity-only transition) to prevent IntersectionObserver interference with BioSection/Timeline useInView
+- Added 2.5D scene tokens to lib/animations.ts (layerScrollSpeeds, layerZDepths, layerScales, scenePerspective, floatingCardConfigs, tiltOnScrollVariants)
+- Created lib/scene-layers.ts — 6 inline SVG strings (mountains, clouds, waves, pine, petals, seal) for dark-mode-aware inlined SVGs
+- Created SceneContainer — CSS 3D perspective wrapper with container-scoped mouse tracking and scroll tracking
+- Created SceneLayer — individual SVG layer at translateZ depth with scroll-driven translateY
+- Created FloatingArtworkCard — kakejiku-styled floating card with sinusoidal drift and mouse tilt
+- Refactored HeroParallax — abstract CSS gradients replaced with SceneContainer + 6× SceneLayer + 5× FloatingArtworkCard
+- Added tiltOnScroll prop to KakejikuCard — rotateX tilt-on-scroll-into-view variant
+- Build: 0 errors, 62/62 tests passing
+- Files touched: components/PageTransition.tsx, lib/animations.ts, lib/scene-layers.ts, components/SceneContainer.tsx, components/SceneLayer.tsx, components/FloatingArtworkCard.tsx, components/HeroParallax.tsx, components/KakejikuCard.tsx
+- Suggested next: testing mode — because components are updated and need visual and integration test coverage

@@ -1,0 +1,102 @@
+<!--
+  Layer 5: Vermillion Seal (朱印 / Shu-in)
+  Z-index: 6 | translateZ: 250px | Scroll speed: 0.7x
+  Purpose: Large decorative watermark — Hiroshige's stylized artist seal
+  Style: Bold vermillion square seal with irregular ("worn") edges, inner kanji characters
+  Palette: --vermillion (at 6-10% opacity — subtle watermark), --sumi (kanji at very low opacity)
+  Note: Unlike the functional seal marks on KakejikuCards, this is a large atmospheric element.
+        It floats at the closest Z-depth, creating the feeling of looking through a sealed scroll.
+        Dark mode variant: opacity reduces to 4-6%, retains vermillion tone.
+-->
+<svg viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Seal design:
+    - Outer border: square with slightly irregular edges (simulated via small bumps)
+    - Inner border: thin line inset
+    - Kanji: 広重 (Hiroshige) in archaic seal-script style
+    - Overall size: ~120x120px, positioned center-right and slightly below center
+    - Rendered at very low opacity as an atmospheric watermark
+  -->
+
+  <g transform="translate(1060, 520)">
+    <!-- Outer seal border — square with subtle edge irregularity -->
+    <path
+      d="M0 0
+        L2 -2 L8 -1 L15 -3 L25 -1 L35 -2 L45 -1 L55 -3 L65 -1 L75 -2 L85 -1 L95 -3 L105 -1 L112 -2 L118 -1 L120 0
+        L122 2 L121 8 L123 15 L121 25 L123 35 L121 45 L123 55 L121 65 L123 75 L121 85 L123 95 L121 105 L122 112 L120 120
+        L118 122 L112 121 L105 123 L95 121 L85 123 L75 121 L65 123 L55 121 L45 123 L35 121 L25 123 L15 121 L8 122 L2 120 L0 118
+        L-2 112 L-1 105 L-3 95 L-1 85 L-3 75 L-1 65 L-3 55 L-1 45 L-3 35 L-1 25 L-3 15 L-2 8 L0 2Z"
+      fill="rgba(168,56,46,0.08)"
+      stroke="rgba(168,56,46,0.15)"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+    />
+
+    <!-- Inner border — inset 8px -->
+    <path
+      d="M8 8 L112 8 L112 112 L8 112Z"
+      fill="none"
+      stroke="rgba(168,56,46,0.10)"
+      stroke-width="1"
+    />
+
+    <!--
+      Kanji: 広重 (Hiroshige)
+      These are simplified "seal-script" (篆書 / tensho) style characters.
+      The strokes are rendered as stylized paths that suggest the character forms.
+    -->
+
+    <!-- 広 (left half — simplified radical + 厶) -->
+    <g stroke="rgba(168,56,46,0.12)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- Top horizontal -->
+      <path d="M18 28 L50 28" />
+      <!-- Left vertical stroke -->
+      <path d="M22 28 L22 95" />
+      <!-- Center element (厶) -->
+      <path d="M35 45 L30 65 L40 65" />
+      <path d="M35 45 L40 65" />
+      <!-- Bottom horizontal -->
+      <path d="M22 88 L50 88" />
+      <!-- Right vertical -->
+      <path d="M50 50 L50 95" />
+      <!-- Middle horizontal -->
+      <path d="M35 66 L50 66" />
+    </g>
+
+    <!-- 重 (right half — stacked elements) -->
+    <g stroke="rgba(168,56,46,0.12)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- Top horizontal -->
+      <path d="M60 28 L100 28" />
+      <!-- Left sweep -->
+      <path d="M65 28 L65 55 L60 65" />
+      <!-- Right sweep -->
+      <path d="M95 28 L95 55 L100 65" />
+      <!-- Center horizontal -->
+      <path d="M60 48 L100 48" />
+      <!-- Lower left -->
+      <path d="M65 55 L65 80 L60 90" />
+      <!-- Lower right -->
+      <path d="M95 55 L95 80 L100 90" />
+      <!-- Bottom horizontal -->
+      <path d="M60 80 L100 80" />
+      <!-- Center verticals -->
+      <path d="M72 28 L72 95" />
+      <path d="M80 48 L80 95" />
+      <path d="M88 28 L88 95" />
+    </g>
+  </g>
+
+  <!-- Secondary smaller seal — bottom-left as compositional balance -->
+  <g transform="translate(200, 650)" opacity="0.5">
+    <circle cx="20" cy="20" r="22" fill="none" stroke="rgba(168,56,46,0.10)" stroke-width="1.5" />
+    <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(168,56,46,0.08)" stroke-width="1" />
+    <!-- Simplified single-kanji: 蔵 (treasure/storehouse) -->
+    <g stroke="rgba(168,56,46,0.10)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M12 12 L28 12" />
+      <path d="M12 12 L12 28" />
+      <path d="M28 12 L28 28" />
+      <path d="M12 20 L28 20" />
+      <path d="M20 12 L20 28" />
+    </g>
+  </g>
+</svg>

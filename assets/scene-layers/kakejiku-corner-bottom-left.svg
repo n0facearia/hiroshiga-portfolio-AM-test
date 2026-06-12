@@ -1,0 +1,39 @@
+<!--
+  Kakejiku Card Corner Accent — Bottom-Left
+  Purpose: Decorative brushstroke corner mark at the bottom-left of the kakejiku mounting
+  Style: Single swift brushstroke — enters from bottom edge, arcs to left edge
+  Palette: --sumi at 35-50% opacity
+  Animation: pathLength 0→1 on hover, duration 400ms, ease brush-stroke, delay 200ms
+  Size: 44×44 viewBox (rendered at ~24×24px)
+-->
+<svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Brushstroke path:
+    Starts just inside the bottom edge (8, 42),
+    sweeps down and left with a slight S-curve to (36, 40),
+    as the brush lifts off the paper at the corner.
+  -->
+  <path
+    d="M8 42
+      Q8 42 10 38
+      Q14 30 18 26
+      Q24 20 28 18
+      Q32 16 36 18
+      Q38 20 36 24"
+    stroke="rgba(42,37,32,0.40)"
+    stroke-width="1.8"
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <!-- Secondary lighter stroke for ink-bleed texture -->
+  <path
+    d="M10 42
+      Q12 38 16 34
+      Q22 28 28 24"
+    stroke="rgba(42,37,32,0.12)"
+    stroke-width="0.8"
+    fill="none"
+    stroke-linecap="round"
+  />
+</svg>

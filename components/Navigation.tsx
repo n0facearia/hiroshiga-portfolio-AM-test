@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ThemeToggle } from './ThemeToggle'
+import { useIsHoverable } from '@/hooks/useIsHoverable'
 
 const navLinks = [
   { href: '/', label: 'Home', labelJp: 'ホーム' },
@@ -20,6 +21,7 @@ const haikuLines = [
 
 export function Navigation() {
   const pathname = usePathname()
+  const canHover = useIsHoverable()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const toggleMobile = useCallback(() => {
@@ -58,7 +60,7 @@ export function Navigation() {
               <motion.div
                 key={link.href}
                 className="relative"
-                whileHover={{ scale: 1.05 }}
+                whileHover={canHover ? { scale: 1.05 } : undefined}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               >
                 <Link

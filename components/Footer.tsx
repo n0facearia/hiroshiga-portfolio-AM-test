@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { BrushstrokeUnderline } from './BrushstrokeUnderline'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -21,24 +22,30 @@ export function Footer() {
 
         {/* Links */}
         <nav className="flex items-center gap-6" aria-label="Footer navigation">
-          <Link
-            href="/"
-            className="text-xs text-mist hover:text-sumi uppercase tracking-widest transition-colors duration-fast"
-          >
-            Home
-          </Link>
-          <Link
-            href="/work"
-            className="text-xs text-mist hover:text-sumi uppercase tracking-widest transition-colors duration-fast"
-          >
-            Gallery
-          </Link>
-          <Link
-            href="/about"
-            className="text-xs text-mist hover:text-sumi uppercase tracking-widest transition-colors duration-fast"
-          >
-            About
-          </Link>
+          <BrushstrokeUnderline>
+            <Link
+              href="/"
+              className="text-xs text-mist uppercase tracking-widest transition-colors duration-fast"
+            >
+              Home
+            </Link>
+          </BrushstrokeUnderline>
+          <BrushstrokeUnderline>
+            <Link
+              href="/work"
+              className="text-xs text-mist uppercase tracking-widest transition-colors duration-fast"
+            >
+              Gallery
+            </Link>
+          </BrushstrokeUnderline>
+          <BrushstrokeUnderline>
+            <Link
+              href="/about"
+              className="text-xs text-mist uppercase tracking-widest transition-colors duration-fast"
+            >
+              About
+            </Link>
+          </BrushstrokeUnderline>
         </nav>
 
         {/* Copyright */}

@@ -4,6 +4,7 @@ import { useState, useCallback, type FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { submitContactMessage } from '@/lib/contact'
 import { softEase, duration } from '@/lib/animations'
+import { BrushstrokeUnderline } from './BrushstrokeUnderline'
 
 interface FormState {
   name: string
@@ -234,20 +235,22 @@ export function ContactForm() {
           transition={{ delay: 0.4 }}
           className="text-center"
         >
-          <button
-            type="submit"
-            disabled={status === 'loading'}
-            className="btn btn-primary relative"
-          >
-            {status === 'loading' ? (
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-vermillion rounded-full animate-pulse" />
-                <span>Sending</span>
-              </span>
-            ) : (
-              'Send — 送る'
-            )}
-          </button>
+          <BrushstrokeUnderline>
+            <button
+              type="submit"
+              disabled={status === 'loading'}
+              className="border border-vermillion text-vermillion bg-transparent rounded-ink px-6 py-2 text-sm uppercase tracking-widest transition-all duration-fast disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              {status === 'loading' ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-vermillion rounded-full animate-pulse" />
+                  <span>Sending</span>
+                </span>
+              ) : (
+                'Send — 送る'
+              )}
+            </button>
+          </BrushstrokeUnderline>
         </motion.div>
       </form>
     </motion.div>

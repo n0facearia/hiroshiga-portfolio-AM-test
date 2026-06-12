@@ -1,0 +1,86 @@
+<!--
+  Layer 0: Distant Mountains (遠山 / Enzan)
+  Z-index: 1 | translateZ: -600px | Scroll speed: 0.05x
+  Purpose: Farthest background — receding mountain ranges with Mt. Fuji silhouette
+  Style: Flat fills, thin sumi outlines, misty indigo/grey tones, small bird specks
+  Palette: --mist, --sumi (outlines), --washi (snow cap), at low opacity (10-20%)
+-->
+<svg viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- BACKGROUND HAZE — subtle sumi wash at horizon -->
+  <rect x="0" y="250" width="1440" height="150" fill="rgba(107,99,88,0.04)" />
+
+  <!-- FARTHEST MOUNTAIN RANGE — most distant, pale mist -->
+  <path
+    d="M0 350 Q60 320 120 340 Q180 310 240 330 Q300 290 360 320 Q420 300 480 320 L480 500 L0 500Z"
+    fill="rgba(107,99,88,0.06)"
+    stroke="rgba(42,37,32,0.10)"
+    stroke-width="1"
+  />
+
+  <!-- MT. FUJI — iconic symmetrical cone, layer behind -->
+  <g>
+    <!-- Main cone -->
+    <path
+      d="M540 220 L620 380 L700 380Z"
+      fill="rgba(107,99,88,0.08)"
+      stroke="rgba(42,37,32,0.18)"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+    />
+    <!-- Snow cap — angular white overlay -->
+    <path
+      d="M565 280 L580 325 L595 320 L610 340 L620 380 L595 350 L585 355Z"
+      fill="rgba(239,232,213,0.5)"
+      stroke="rgba(42,37,32,0.12)"
+      stroke-width="0.75"
+      stroke-linejoin="round"
+    />
+    <!-- Base ridge line -->
+    <path
+      d="M540 380 Q620 370 700 380"
+      fill="none"
+      stroke="rgba(42,37,32,0.10)"
+      stroke-width="1"
+    />
+  </g>
+
+  <!-- SECOND MOUNTAIN RANGE — closer, slightly darker -->
+  <path
+    d="M0 400 Q80 365 160 385 Q240 355 320 375 Q400 350 480 380 Q560 370 640 390 Q720 375 800 395 Q880 380 960 400 Q1040 390 1120 410 Q1200 395 1320 415 Q1400 405 1440 420 L1440 550 L0 550Z"
+    fill="rgba(42,37,32,0.04)"
+    stroke="rgba(42,37,32,0.10)"
+    stroke-width="1"
+  />
+
+  <!-- THIRD MOUNTAIN RANGE — closest of the far mountains -->
+  <path
+    d="M0 430 Q100 400 200 420 Q300 395 400 415 Q500 405 600 425 Q700 410 800 430 Q900 420 1000 440 Q1100 430 1200 450 Q1320 440 1440 455 L1440 550 L0 550Z"
+    fill="rgba(42,37,32,0.03)"
+    stroke="rgba(42,37,32,0.08)"
+    stroke-width="0.75"
+  />
+
+  <!-- DISTANT PINE SILHOUETTES — tiny dark specks on ridge lines -->
+  <g fill="rgba(42,37,32,0.15)">
+    <circle cx="140" cy="382" r="3" />
+    <circle cx="152" cy="386" r="2.5" />
+    <circle cx="165" cy="384" r="2" />
+    <circle cx="760" cy="390" r="3" />
+    <circle cx="775" cy="395" r="2.5" />
+    <circle cx="790" cy="392" r="2" />
+    <circle cx="1050" cy="405" r="3.5" />
+    <circle cx="1065" cy="410" r="2.5" />
+  </g>
+
+  <!-- FLYING BIRDS — classic ukiyo-e V-shapes in the sky -->
+  <g stroke="rgba(42,37,32,0.12)" stroke-width="1" fill="none" stroke-linecap="round">
+    <path d="M280 180 Q285 176 290 180" />
+    <path d="M300 165 Q305 161 310 165" />
+    <path d="M265 192 Q270 188 275 192" />
+    <path d="M350 170 Q355 166 360 170" />
+    <path d="M370 185 Q375 181 380 185" />
+  </g>
+
+  <!-- HORIZON HAZE LINE -->
+  <line x1="0" y1="440" x2="1440" y2="440" stroke="rgba(42,37,32,0.04)" stroke-width="1" />
+</svg>

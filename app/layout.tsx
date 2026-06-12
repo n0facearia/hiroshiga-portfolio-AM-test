@@ -53,6 +53,10 @@ export const metadata: Metadata = {
   },
   description:
     'A visually immersive portfolio showcasing Utagawa Hiroshige\'s Japanese woodblock prints — The Fifty-Three Stations of the Tōkaidō and One Hundred Famous Views of Edo.',
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+  },
   openGraph: {
     title: 'Hiroshige — Woodblock Prints of Edo',
     description:

@@ -2,6 +2,7 @@ import { getArtistInfo } from '@/lib/artworks'
 import { InkBackground } from '@/components/InkBackground'
 import { BioSection } from '@/components/BioSection'
 import { BrushstrokeDivider } from '@/components/BrushstrokeDivider'
+import { BrushstrokeUnderline } from '@/components/BrushstrokeUnderline'
 import { Timeline } from '@/components/Timeline'
 import { AboutPageClient } from './AboutPageClient'
 
@@ -50,14 +51,16 @@ export default async function AboutPage() {
         <section className="max-w-3xl mx-auto px-6 md:px-12 py-12 text-center">
           <p className="font-body text-xs text-mist/60 leading-relaxed">
             All artwork images are sourced from{' '}
-            <a
-              href="https://commons.wikimedia.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-vermillion transition-colors"
-            >
-              Wikimedia Commons
-            </a>
+            <BrushstrokeUnderline>
+              <a
+                href="https://commons.wikimedia.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors"
+              >
+                Wikimedia Commons
+              </a>
+            </BrushstrokeUnderline>
             {' '}and are in the public domain as faithful reproductions of
             pre-1923 works by Utagawa Hiroshige (1797–1858).
           </p>

@@ -1,0 +1,143 @@
+<!--
+  Layer 3: Foreground Pine (松 / Matsu)
+  Z-index: 4 | translateZ: 50px | Scroll speed: 0.5x
+  Purpose: Foreground framing element — stylized pine branch entering from right edge
+  Style: Angular/gnarly trunk with clustered needle groups, bold sumi strokes
+  Palette: --sumi-deep (trunk at 30-40%), --sumi (needles at 25-35%), --mist (subtle bark detail)
+  Note: Pine branch is a classic ukiyo-e framing device (maegaki / 前書き) that establishes
+        extreme foreground and enhances the sense of looking through something into the scene.
+-->
+<svg viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Pine branch composition:
+    - Main trunk enters from right edge at mid-height, angles down-left
+    - Two sub-branches fork off: one reaching left, one angling down
+    - Needle clusters at branch tips — circular/radial bundles of fine lines
+    - A few scattered individual needles for organic feel
+  -->
+
+  <!-- MAIN TRUNK — angular, gnarly, entering from right -->
+  <g>
+    <path
+      d="M1440 380 L1350 395 L1320 410 L1280 430 L1240 460 L1220 480 L1200 510"
+      stroke="rgba(42,37,32,0.35)"
+      stroke-width="6"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <!-- Trunk texture — lighter parallel line for wood grain -->
+    <path
+      d="M1440 384 L1350 399 L1320 414 L1280 434 L1240 464 L1220 484 L1200 514"
+      stroke="rgba(42,37,32,0.12)"
+      stroke-width="1.5"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- SUB-BRANCH 1 — forking left-upward -->
+  <g>
+    <path
+      d="M1320 410 L1280 395 L1240 388 L1180 385"
+      stroke="rgba(42,37,32,0.30)"
+      stroke-width="3.5"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M1320 414 L1280 399 L1240 392 L1180 389"
+      stroke="rgba(42,37,32,0.10)"
+      stroke-width="1"
+      fill="none"
+      stroke-linecap="round"
+    />
+  </g>
+
+  <!-- SUB-BRANCH 2 — forking downward -->
+  <g>
+    <path
+      d="M1280 430 L1245 445 L1210 468 L1185 495"
+      stroke="rgba(42,37,32,0.28)"
+      stroke-width="3"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- NEEDLE CLUSTER 1 — at tip of main branch (bottom-left) -->
+  <g stroke="rgba(42,37,32,0.30)" stroke-width="1" stroke-linecap="round" fill="none">
+    <path d="M1200 510 L1170 505" />
+    <path d="M1200 510 L1165 510" />
+    <path d="M1200 510 L1170 515" />
+    <path d="M1200 510 L1175 520" />
+    <path d="M1200 510 L1185 525" />
+    <path d="M1200 510 L1195 528" />
+    <path d="M1200 510 L1208 525" />
+    <path d="M1200 510 L1215 520" />
+    <path d="M1200 510 L1220 512" />
+    <path d="M1200 510 L1218 505" />
+    <path d="M1200 510 L1210 500" />
+    <path d="M1200 510 L1198 498" />
+  </g>
+
+  <!-- NEEDLE CLUSTER 2 — at tip of sub-branch 1 (left) -->
+  <g stroke="rgba(42,37,32,0.28)" stroke-width="1" stroke-linecap="round" fill="none">
+    <path d="M1180 385 L1155 378" />
+    <path d="M1180 385 L1152 385" />
+    <path d="M1180 385 L1155 392" />
+    <path d="M1180 385 L1162 398" />
+    <path d="M1180 385 L1172 402" />
+    <path d="M1180 385 L1185 400" />
+    <path d="M1180 385 L1195 395" />
+    <path d="M1180 385 L1200 388" />
+    <path d="M1180 385 L1195 378" />
+    <path d="M1180 385 L1185 370" />
+    <path d="M1180 385 L1170 372" />
+  </g>
+
+  <!-- NEEDLE CLUSTER 3 — at tip of sub-branch 2 (downward) -->
+  <g stroke="rgba(42,37,32,0.26)" stroke-width="1" stroke-linecap="round" fill="none">
+    <path d="M1185 495 L1160 488" />
+    <path d="M1185 495 L1155 495" />
+    <path d="M1185 495 L1160 502" />
+    <path d="M1185 495 L1165 510" />
+    <path d="M1185 495 L1175 515" />
+    <path d="M1185 495 L1190 512" />
+    <path d="M1185 495 L1200 505" />
+    <path d="M1185 495 L1210 498" />
+    <path d="M1185 495 L1205 488" />
+    <path d="M1185 495 L1195 482" />
+  </g>
+
+  <!-- NEEDLE CLUSTER 4 — along sub-branch 1 midpoint -->
+  <g stroke="rgba(42,37,32,0.20)" stroke-width="0.8" stroke-linecap="round" fill="none">
+    <path d="M1260 396 L1245 390" />
+    <path d="M1260 396 L1242 396" />
+    <path d="M1260 396 L1245 402" />
+    <path d="M1260 396 L1252 406" />
+    <path d="M1260 396 L1265 404" />
+    <path d="M1260 396 L1272 400" />
+    <path d="M1260 396 L1268 390" />
+  </g>
+
+  <!-- SCATTERED INDIVIDUAL NEEDLES — adds organic feel -->
+  <g stroke="rgba(42,37,32,0.15)" stroke-width="0.8" stroke-linecap="round" fill="none">
+    <path d="M1280 400 L1270 395" />
+    <path d="M1240 455 L1228 450" />
+    <path d="M1220 475 L1208 472" />
+    <path d="M1300 405 L1292 398" />
+    <path d="M1220 390 L1210 385" />
+  </g>
+
+  <!-- PINE CONE — small detail on main branch -->
+  <g>
+    <ellipse cx="1260" cy="425" rx="5" ry="7" fill="rgba(42,37,32,0.20)" stroke="rgba(42,37,32,0.30)" stroke-width="1" />
+    <path d="M1257 422 L1263 422" stroke="rgba(42,37,32,0.25)" stroke-width="0.8" />
+    <path d="M1256 426 L1264 426" stroke="rgba(42,37,32,0.25)" stroke-width="0.8" />
+    <path d="M1257 430 L1263 430" stroke="rgba(42,37,32,0.25)" stroke-width="0.8" />
+  </g>
+</svg>

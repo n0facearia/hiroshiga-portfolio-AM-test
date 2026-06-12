@@ -76,7 +76,7 @@ export function FloatingPetals({ count = 15 }: { count?: number }) {
           <svg
             viewBox="0 0 20 14"
             className="w-full h-full"
-            style={{ fill: '#F5E0D0' }}
+            style={{ fill: 'rgba(var(--vermillion-rgb), 0.15)' }}
           >
             <ellipse cx="10" cy="7" rx="9" ry="6" />
           </svg>

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { BrushstrokeUnderline } from '@/components/BrushstrokeUnderline'
 
 export default function NotFoundPage() {
   return (
@@ -17,12 +18,14 @@ export default function NotFoundPage() {
         the void.
       </p>
       <div className="w-px h-8 bg-washi-medium my-8" aria-hidden="true" />
-      <Link
-        href="/"
-        className="btn btn-primary text-xs"
-      >
-        Return Home
-      </Link>
+      <BrushstrokeUnderline>
+        <Link
+          href="/"
+          className="text-xs uppercase tracking-widest text-vermillion border border-vermillion rounded-ink px-6 py-2 inline-block transition-all duration-fast"
+        >
+          Return Home
+        </Link>
+      </BrushstrokeUnderline>
     </div>
   )
 }

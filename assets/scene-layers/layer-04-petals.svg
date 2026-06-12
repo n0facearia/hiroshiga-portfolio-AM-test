@@ -1,0 +1,48 @@
+<!--
+  Layer 4: Falling Petals (花 / Hana)
+  Z-index: 5 | translateZ: 150px | Scroll speed: 0.6x
+  Purpose: Animated foreground particles — falling sakura petals
+  Style: Small elliptical petal shapes at scattered positions, subtle pink/warm-white
+  Palette: Subtle pink-warm tone (#E8C8C0 approximating pale cherry blossom), --washi for snow variant
+  Animation: Each petal has independent floating animation (drift, spin, fade) via Framer Motion
+  Count: 12-15 on desktop, 6-8 on tablet, 0 on mobile + reduced motion
+  Note: This layer is partially CSS/Framer Motion animated (not purely static SVG).
+        The SVG defines the petal shape; the animation is applied per-instance in the component.
+        Dark mode variant: petals shift to pale white (snow-like) for night scene character.
+-->
+<svg viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    This SVG defines the PETAL SHAPE used as a <defs> reference.
+    Each petal instance in the DOM is a <use> of this shape with individual
+    transform/position applied by Framer Motion at runtime.
+
+    Petal shape: ~16x10px ellipse with slight asymmetry (sakura petal form)
+  -->
+
+  <defs>
+    <!-- Sakura petal — 5-lobed simple shape -->
+    <g id="sakura-petal">
+      <path
+        d="M0 0
+          C-2 -2 -4 -1 -5 0
+          C-6 2 -5 5 -3 6
+          C-1 7 0 8 0 10
+          C0 8 1 7 3 6
+          C5 5 6 2 5 0
+          C4 -1 2 -2 0 0Z"
+        fill="#E8C8C0"
+        stroke="rgba(42,37,32,0.08)"
+        stroke-width="0.5"
+      />
+    </g>
+
+    <!-- Snow petal variant (winter/dark mode) — simpler, rounder -->
+    <g id="snow-particle">
+      <circle cx="0" cy="0" r="2.5" fill="rgba(239,232,213,0.5)" />
+      <path d="M0 -4 L0 4 M-4 0 L4 0" stroke="rgba(239,232,213,0.3)" stroke-width="0.5" />
+    </g>
+  </defs>
+
+  <!-- Static position references (actual positions set at runtime by animation) -->
+  <!-- The SVG viewBox defines the coordinate space; individual transforms animate each instance -->
+</svg>

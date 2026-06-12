@@ -4,6 +4,7 @@ import { InkBackground } from '@/components/InkBackground'
 import { HeroParallax } from '@/components/HeroParallax'
 import { KakejikuCard } from '@/components/KakejikuCard'
 import { BrushstrokeDivider } from '@/components/BrushstrokeDivider'
+import { BrushstrokeUnderline } from '@/components/BrushstrokeUnderline'
 
 export default async function HomePage() {
   const [featured, artist] = await Promise.all([
@@ -11,14 +12,20 @@ export default async function HomePage() {
     getArtistInfo(),
   ])
 
+  // First 5 appear as floating cards in HeroParallax, the rest as a grid
+  const gridArtworks = featured.slice(5)
+
   return (
     <>
       <InkBackground />
 
-      {/* Hero section */}
+      {/* Hero section with 2.5D floating scene */}
       <HeroParallax artworks={featured} />
 
-      {/* Section 2: Featured Masterworks */}
+      {/* Visual divider — transitions from floating 3D scene to flat grid */}
+      <BrushstrokeDivider variant="mountain" />
+
+      {/* Section 2: Featured Masterworks (remaining artworks after floating cards) */}
       <section className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="font-display text-3xl md:text-4xl text-sumi">
@@ -31,11 +38,12 @@ export default async function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {featured.map((artwork, index) => (
+          {gridArtworks.map((artwork, index) => (
             <KakejikuCard
               key={artwork.id}
               artwork={artwork}
               index={index}
+              tiltOnScroll
             />
           ))}
         </div>
@@ -62,12 +70,14 @@ export default async function HomePage() {
               {artist.bio}
             </p>
             <div className="mt-6">
-              <a
-                href="/about"
-                className="btn btn-primary text-xs"
-              >
-                Read More
-              </a>
+              <BrushstrokeUnderline>
+                <a
+                  href="/about"
+                  className="text-xs uppercase tracking-widest text-vermillion border border-vermillion rounded-ink px-6 py-2 inline-block transition-all duration-fast"
+                >
+                  Read More
+                </a>
+              </BrushstrokeUnderline>
             </div>
           </div>
         </div>
@@ -104,12 +114,14 @@ export default async function HomePage() {
               Tōkaidō road connecting Edo and Kyoto.
             </p>
             <div className="mt-6">
-              <a
-                href="/work?series=Fifty-Three+Stations+of+the+Tōkaidō"
-                className="text-xs uppercase tracking-widest text-vermillion hover:text-sumi transition-colors duration-fast"
-              >
-                View Series →
-              </a>
+              <BrushstrokeUnderline>
+                <a
+                  href="/work?series=Fifty-Three+Stations+of+the+Tōkaidō"
+                  className="text-xs uppercase tracking-widest text-vermillion transition-colors duration-fast"
+                >
+                  View Series →
+                </a>
+              </BrushstrokeUnderline>
             </div>
           </div>
 
@@ -129,12 +141,14 @@ export default async function HomePage() {
               scenes from Edo (Tokyo) across all four seasons.
             </p>
             <div className="mt-6">
-              <a
-                href="/work?series=One+Hundred+Famous+Views+of+Edo"
-                className="text-xs uppercase tracking-widest text-vermillion hover:text-sumi transition-colors duration-fast"
-              >
-                View Series →
-              </a>
+              <BrushstrokeUnderline>
+                <a
+                  href="/work?series=One+Hundred+Famous+Views+of+Edo"
+                  className="text-xs uppercase tracking-widest text-vermillion transition-colors duration-fast"
+                >
+                  View Series →
+                </a>
+              </BrushstrokeUnderline>
             </div>
           </div>
         </div>

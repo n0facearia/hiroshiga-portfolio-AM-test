@@ -4,6 +4,7 @@ import { useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Artwork } from '@/types'
+import { BrushstrokeUnderline } from './BrushstrokeUnderline'
 
 interface LightboxProps {
   artworkId: number
@@ -150,14 +151,16 @@ export function Lightbox({
             {/* Wikimedia attribution */}
             <p className="text-xs text-mist/60 mt-6 leading-relaxed">
               Image courtesy of{' '}
-              <a
-                href="https://commons.wikimedia.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-vermillion transition-colors"
-              >
-                Wikimedia Commons
-              </a>
+              <BrushstrokeUnderline>
+                <a
+                  href="https://commons.wikimedia.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors"
+                >
+                  Wikimedia Commons
+                </a>
+              </BrushstrokeUnderline>
               {' '}(public domain)
             </p>
           </div>

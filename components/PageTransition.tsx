@@ -3,31 +3,29 @@
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import { brushStroke } from '@/lib/animations'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 
+/**
+ * Opacity-only page transition (no clipPath).
+ * clipPath in the initial state could interfere with IntersectionObserver
+ * inside child components (BioSection, Timeline), preventing useInView
+ * from firing when parent clips the element's visual box.
+ *
+ * Using the project's existing useReducedMotion hook (useState + useEffect)
+ * instead of window.matchMedia() in render avoids hydration mismatches.
+ */
 const pageVariants = {
-  initial: {
-    opacity: 0,
-    clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)',
-  },
+  initial: { opacity: 0 },
   animate: {
     opacity: 1,
-    clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-    transition: {
-      duration: 0.6,
-      ease: brushStroke,
-    },
+    transition: { duration: 0.6, ease: brushStroke },
   },
   exit: {
     opacity: 0,
-    clipPath: 'polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)',
-    transition: {
-      duration: 0.5,
-      ease: brushStroke,
-    },
+    transition: { duration: 0.4, ease: brushStroke },
   },
 }
 
-// Reduced motion variant — simple fade
 const fadeVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 0.2 } },
@@ -36,17 +34,11 @@ const fadeVariants = {
 
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-
-  // Check reduced motion via matchMedia
-  const prefersReduced =
-    typeof window !== 'undefined'
-      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      : false
-
+  const prefersReduced = useReducedMotion()
   const variants = prefersReduced ? fadeVariants : pageVariants
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="popLayout">
       <motion.div
         key={pathname}
         variants={variants}

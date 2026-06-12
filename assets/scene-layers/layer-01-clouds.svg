@@ -1,0 +1,150 @@
+<!--
+  Layer 1: Mid-ground Clouds (雲 / Kumo)
+  Z-index: 2 | translateZ: -400px | Scroll speed: 0.15x
+  Purpose: Classic ukiyo-e cloud bands — horizontal oblongs with curled spiral ends
+  Style: Flat washi-cream fills, sumi outlines, clouds create depth by dividing composition
+  Palette: --washi (fill at 70-90%), --sumi (outline at 15-20%), --mist (subtle shading)
+-->
+<svg viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Cloud construction:
+    Each cloud band is a long horizontal shape with rounded/curled ends.
+    The "fist" curl at each end is characteristic of ukiyo-e cloud motifs.
+    Bands float at different heights, overlapping to create depth.
+  -->
+
+  <!-- CLOUD BAND 1 — upper right, small -->
+  <g>
+    <path
+      d="M950 220
+        Q930 218 920 210 Q910 200 920 194
+        Q930 188 950 194
+        L1100 205
+        Q1120 208 1130 216 Q1140 226 1130 232
+        Q1120 238 1100 232
+        L970 226
+        Q960 228 950 220Z"
+      fill="rgba(239,232,213,0.85)"
+      stroke="rgba(42,37,32,0.12)"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+    />
+    <!-- Cloud curl detail end -->
+    <path
+      d="M1125 215 Q1135 220 1128 228"
+      stroke="rgba(42,37,32,0.08)"
+      stroke-width="1"
+      fill="none"
+      stroke-linecap="round"
+    />
+  </g>
+
+  <!-- CLOUD BAND 2 — main upper cloud, left to center -->
+  <g>
+    <path
+      d="M50 280
+        Q30 278 20 268 Q10 258 20 252
+        Q30 246 50 252
+        L450 260
+        Q470 262 480 272 Q490 282 480 288
+        Q470 294 450 288
+        L70 286
+        Q60 288 50 280Z"
+      fill="rgba(239,232,213,0.90)"
+      stroke="rgba(42,37,32,0.15)"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+    />
+    <!-- Decorative curl detail -->
+    <path
+      d="M475 270 Q485 275 478 284"
+      stroke="rgba(42,37,32,0.10)"
+      stroke-width="1"
+      fill="none"
+      stroke-linecap="round"
+    />
+    <path
+      d="M25 268 Q15 262 22 254"
+      stroke="rgba(42,37,32,0.08)"
+      stroke-width="1"
+      fill="none"
+      stroke-linecap="round"
+    />
+  </g>
+
+  <!-- CLOUD BAND 3 — large lower cloud spanning center -->
+  <g>
+    <path
+      d="M300 400
+        Q280 396 270 386 Q260 376 270 370
+        Q280 364 300 370
+        L900 385
+        Q920 388 930 398 Q940 408 930 414
+        Q920 420 900 414
+        L320 406
+        Q310 408 300 400Z"
+      fill="rgba(239,232,213,0.88)"
+      stroke="rgba(42,37,32,0.14)"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+    />
+    <!-- Subtle shadow line underneath for depth -->
+    <path
+      d="M300 406 Q600 420 900 414"
+      fill="none"
+      stroke="rgba(42,37,32,0.06)"
+      stroke-width="2"
+    />
+    <!-- Decorative curl at right end -->
+    <path
+      d="M925 396 Q935 402 928 412"
+      stroke="rgba(42,37,32,0.09)"
+      stroke-width="1"
+      fill="none"
+      stroke-linecap="round"
+    />
+  </g>
+
+  <!-- CLOUD BAND 4 — small accent cloud -->
+  <g>
+    <path
+      d="M600 320
+        Q590 318 585 312 Q580 306 585 302
+        Q590 298 600 302
+        L680 310
+        Q690 312 695 318
+        Q690 324 680 320
+        L610 318
+        Q600 320 600 320Z"
+      fill="rgba(239,232,213,0.75)"
+      stroke="rgba(42,37,32,0.10)"
+      stroke-width="1"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- CLOUD BAND 5 — lowest, passing behind the wave layer -->
+  <g>
+    <path
+      d="M100 500
+        Q80 498 70 490 Q60 482 70 477
+        Q80 472 100 477
+        L400 490
+        Q420 493 430 502 Q440 512 430 518
+        Q420 524 400 518
+        L120 506
+        Q110 508 100 500Z"
+      fill="rgba(239,232,213,0.82)"
+      stroke="rgba(42,37,32,0.10)"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- MIST HAZE — thin horizontal lines suggesting distance -->
+  <g stroke="rgba(107,99,88,0.06)" stroke-width="1" stroke-linecap="round">
+    <line x1="800" y1="290" x2="950" y2="290" />
+    <line x1="200" y1="350" x2="400" y2="350" />
+    <line x1="1000" y1="370" x2="1100" y2="370" />
+  </g>
+</svg>

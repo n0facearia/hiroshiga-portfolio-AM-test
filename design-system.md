@@ -405,15 +405,30 @@ DaisyUI is the component library. These overrides transform its default modern l
 #### KakejikuCard (Artwork Card)
 ```
 Purpose: Display an artwork in the style of a Japanese hanging scroll (kakejiku)
-Structure:
+Structure — same physical anatomy:
   ┌─ hanging cord (thin line, --sumi) ───────────┐
   │                                               │
   │  ┌─ top rod (--sumi-deep, 6px height) ────┐  │
   │  │                                         │  │
   │  │  ┌─ mounting (--washi, 4px border) ─┐  │  │
   │  │  │                                   │  │  │
-  │  │  │         ARTWORK IMAGE             │  │  │
+  │  │  │  ┌─ corner accents ────────────┐  │  │  │
+  │  │  │  │  (2 SVGs: top-right +       │  │  │  │
+  │  │  │  │   bottom-left, draw in on   │  │  │  │
+  │  │  │  │   hover via pathLength)     │  │  │  │
+  │  │  │  └─────────────────────────────┘  │  │  │
   │  │  │                                   │  │  │
+  │  │  │  ┌─ ARTWORK IMAGE ─────────────┐  │  │  │
+  │  │  │  │  + ink-wash ripple overlay  │  │  │  │
+  │  │  │  │  (cursor-following radial   │  │  │  │
+  │  │  │  │  gradient, fades in on      │  │  │  │
+  │  │  │  │  hover with ink-bleed ease) │  │  │  │
+  │  │  │  └─────────────────────────────┘  │  │  │
+  │  │  │                                   │  │  │
+  │  │  │  ┌─ seal stamp (蔵) ───────────┐  │  │  │
+  │  │  │  │  blooms last with ink-bleed │  │  │  │
+  │  │  │  │  overshoot, delayed 200ms   │  │  │  │
+  │  │  │  └─────────────────────────────┘  │  │  │
   │  │  └───────────────────────────────────┘  │  │
   │  │                                         │  │
   │  └── bottom rod (--sumi-deep, 6px) ───────┘  │
@@ -422,17 +437,266 @@ Structure:
   │  │  Title (Noto Serif JP 600, text-xl)    │   │
   │  │  Series (Noto Sans JP 300, text-sm)    │   │
   │  │  Vermillion seal (small █ mark)        │   │
+  │  │  Vermillion underline draws in on      │   │
+  │  │  hover (width 0→100%)                  │   │
   │  └────────────────────────────────────────┘   │
   └───────────────────────────────────────────────┘
 
-Behavior:
-  Default:  Flat, like a scroll hanging on a wall
-  Hover:    Subtle rotation (-1deg to +1deg) via onMouseMove tracking
-            Shadow deepens to shadow-md
-            "Lifted" feel as if picking up a physical print
+Behavior — Tripartite Hover (parallax tilt + ink-wash ripple + brushstroke corner frame):
+  Default:  Flat, like a scroll hanging on a wall. Shadow: shadow-ink-sm.
+  
+  Hover Enter (total: ~700ms timeline):
+    0ms      Cursor enters card → mouse tracking begins (immediate)
+             Parallax tilt initializes: rotateX/Y track cursor position
+    0-400ms  Ink-wash ripple: radial gradient spreads from cursor (ink-bleed ease)
+    100-500ms Brushstroke corner accents: 2 SVGs draw in via pathLength
+              (top-right at 100ms, bottom-left at 300ms)
+    200-500ms Depth shadow: transitions from single shadow to triple-layer ink spread
+              Shadow intensity maps to tilt angle — deeper tilt → deeper shadow
+    300-600ms Seal stamp blooms in: scale 0.3→1.0, rotate -10°→0°
+              with ink-bleed overshoot (the final flourish)
+  
+  Hover Exit (total: ~300ms):
+    0ms      Cursor leaves → all effects reverse
+    0-100ms  Parallax tilt snaps to flat (no spring, immediate)
+    0-200ms  Ink-wash ripple: opacity 1→0
+    0-200ms  Corner accents: opacity 1→0 (no reverse pathLength, just fade)
+    0-300ms  Shadow returns to shadow-ink-sm
+    0-200ms  Seal stamp: opacity 1→0, scale 1→0.8
+
   Focus:    Ink-ring focus outline (2px --vermillion with offset)
-  Touch:    Tap to open lightbox (no rotation on mobile)
+  Touch:    Tap to open lightbox — all hover effects disabled
+  Reduced motion: No tilt, no ripple, no pathLength — simple opacity fades only
 ```
+
+### KakejikuCard — Tripartite Hover Implementation Reference
+
+#### 1. Parallax Tilt (rotateX/Y)
+
+The card sits in a CSS perspective container and tilts toward cursor position, creating 3D "following."
+
+```typescript
+// Card outer wrapper — set once, not animated
+// perspective: 1000px
+
+// Motion values
+const rotateX = useMotionValue(0)
+const rotateY = useMotionValue(0)
+const springRotateX = useSpring(rotateX, { stiffness: 150, damping: 15 })
+const springRotateY = useSpring(rotateY, { stiffness: 150, damping: 15 })
+
+// Mouse tracking on the card's outermost element
+const handleMouseMove = (e: React.MouseEvent) => {
+  const rect = e.currentTarget.getBoundingClientRect()
+  const x = (e.clientX - rect.left) / rect.width - 0.5  // -0.5 to 0.5
+  const y = (e.clientY - rect.top) / rect.height - 0.5
+  rotateX.set(y * -10)   // map to -5deg to +5deg
+  rotateY.set(x * 10)
+}
+
+// Applied style on the card's inner content wrapper:
+//   transform: perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg)
+//   transition: transform 0.1s ease (on exit — snap back)
+```
+
+**Rationale:** Max rotation ±5° (increased from current ±1°). The wider range makes the tilt perceptible without distorting the artwork. Spring smoothing (stiffness 150, damping 15) prevents jitter during rapid mouse movement.
+
+#### 2. Ink-Wash Ripple
+
+A radial gradient overlay that follows the cursor, simulating ink bleeding from the point of touch onto the paper.
+
+```typescript
+// Ink ripple state — tracks cursor position as percentages
+const [ripplePos, setRipplePos] = useState({ x: 50, y: 50 })
+
+// Update on mouse move (combined with tilt handler)
+setRipplePos({
+  x: (e.clientX - rect.left) / rect.width * 100,
+  y: (e.clientY - rect.top) / rect.height * 100,
+})
+
+// Ink-wash overlay element:
+<motion.div
+  className="absolute inset-0 pointer-events-none z-[1]"
+  style={{
+    background: `radial-gradient(
+      circle at ${ripplePos.x}% ${ripplePos.y}%,
+      rgba(var(--sumi-rgb), 0.10) 0%,
+      rgba(var(--sumi-rgb), 0.04) 20%,
+      rgba(var(--sumi-rgb), 0.02) 40%,
+      transparent 65%
+    )`,
+  }}
+  initial={{ opacity: 0 }}
+  whileHover={{ opacity: 1 }}
+  transition={{ duration: 0.4, ease: inkBleed }}
+/>
+```
+
+**Gradient structure:**
+- Center (0%): sumi at 10% opacity — darkest point at cursor
+- Inner spread (20%): sumi at 4% — soft ink pool
+- Mid spread (40%): sumi at 2% — feathering edge
+- Fade out (65%): transparent — clean edge
+
+**Rationale:** The ink-bleed easing curve `[0.34, 1.56, 0.64, 1]` has a subtle overshoot that mimics how ink spreads slightly beyond its final boundary before settling. The gradient is always sumi (never vermillion) — vermillion remains reserved for the seal stamp.
+
+#### 3. Brushstroke Corner Frame
+
+Two small SVG brushstroke marks at top-right and bottom-left corners of the mounting area. They draw in with `pathLength` animation on hover.
+
+```
+SVG assets:
+  assets/scene-layers/kakejiku-corner-top-right.svg
+  assets/scene-layers/kakejiku-corner-bottom-left.svg
+
+Both: viewBox 0 0 44 44, rendered at ~24×24px (inline SVG in the mounting)
+```
+
+```typescript
+// Top-right corner:
+<motion.path
+  d="M42 8 Q42 4 38 4 Q30 4 24 8 Q18 12 14 14 Q10 16 8 14 Q6 12 8 6"
+  stroke="rgba(var(--sumi-rgb), 0.40)"
+  strokeWidth="1.8"
+  fill="none"
+  strokeLinecap="round"
+  initial={{ pathLength: 0, opacity: 0 }}
+  whileHover={{ pathLength: 1, opacity: 1 }}
+  transition={{ duration: 0.4, ease: brushStroke, delay: 0.1 }}
+/>
+
+// Bottom-left corner:
+<motion.path
+  d="M8 42 Q8 42 10 38 Q14 30 18 26 Q24 20 28 18 Q32 16 36 18 Q38 20 36 24"
+  stroke="rgba(var(--sumi-rgb), 0.40)"
+  strokeWidth="1.8"
+  fill="none"
+  strokeLinecap="round"
+  initial={{ pathLength: 0, opacity: 0 }}
+  whileHover={{ pathLength: 1, opacity: 1 }}
+  transition={{ duration: 0.4, ease: brushStroke, delay: 0.3 }}
+/>
+```
+
+**Rationale:** These corner marks reference the decorative corner reinforcements (kakuri) on high-quality Japanese scroll mounts. They aren't functional — they're visual cues that the card is a physical object with edges and structure. The staggered start (100ms vs 300ms) creates a diagonal drawing sequence: top-right then bottom-left, as if the frame is being painted in a single X-shaped gesture.
+
+#### 4. Layered Depth Shadow
+
+```typescript
+// Shadow intensity derived from tilt angle via Framer Motion
+const shadowBlur = useTransform(
+  [springRotateX, springRotateY],
+  ([rx, ry]) => {
+    const tilt = Math.min(Math.abs(rx as number) + Math.abs(ry as number), 8)
+    return tilt  // 0 (flat) → 8 (max tilt)
+  }
+)
+
+// Three-layer shadow that intensifies with tilt
+// At rest (tilt = 0):
+//   box-shadow: 0 1px 2px rgba(var(--sumi-rgb), 0.06)
+// At max tilt (tilt = 8):
+//   box-shadow:
+//     0 4px 12px rgba(var(--sumi-rgb), 0.08),
+//     0 12px 24px rgba(var(--sumi-rgb), 0.06),
+//     0 24px 48px rgba(var(--sumi-rgb), 0.04)
+```
+
+**Rationale:** Multiple box-shadows at increasing blur render in order (first on top). The tightest shadow (4px blur) creates a crisp contact shadow; the middle (12px) simulates ink spread on the surface below; the widest (24px) mimics ambient ink wash. This creates the illusion that the card is physically lifting off a slightly absorbent paper surface.
+
+Dark mode shadows use `rgba(var(--washi-rgb), X)` instead of `rgba(var(--sumi-rgb), X)` to maintain the night-scene character.
+
+#### 5. Seal Stamp — Updated Animation
+
+The existing vermillion seal (蔵) remains but gains a delayed ink-bleed flourish:
+
+```typescript
+// Seal stamp — final flourish
+<motion.div
+  initial={{ opacity: 0, scale: 0.3, rotate: -10 }}
+  whileHover={{
+    opacity: 1,
+    scale: 1,
+    rotate: 0,
+    transition: {
+      duration: 0.5,
+      ease: inkBleed,     // [0.34, 1.56, 0.64, 1] — overshoot
+      delay: 0.2,          // Delayed — last effect to trigger
+    },
+  }}
+/>
+```
+
+Additional detail on hover: a subtle vermillion glow via CSS:
+```css
+.seal-vermillion-glow {
+  filter: drop-shadow(0 0 4px rgba(var(--vermillion-rgb), 0.25));
+}
+```
+
+#### Effect Layering Diagram
+
+```
+┌── KakejikuCard (perspective: 1000px) ─────────────────────────┐
+│                                                                 │
+│  rotateX(spring) rotateY(spring)   ← Framer Motion on inner     │
+│                                                                 │
+│  ┌── shadow (tilt-responsive triple layer) ───────────────────┐ │
+│  │                                                             │ │
+│  │  ┌── top rod ────────────────────────────────────────────┐ │ │
+│  │  │                                                       │ │ │
+│  │  │  ┌── mounting ──────────────────────────────────────┐ │ │ │
+│  │  │  │                                                    │ │ │ │
+│  │  │  │  ┌── corner-top-right (SVG, pathLength 0→1) ───┐  │ │ │ │
+│  │  │  │  │                              delay: 100ms    │  │ │ │ │
+│  │  │  │  └──────────────────────────────────────────────┘  │ │ │ │
+│  │  │  │                                                    │ │ │ │
+│  │  │  │  ┌── artwork image ─────────────────────────────┐  │ │ │ │
+│  │  │  │  │  ┌── ink-wash ripple overlay ────────────┐   │  │ │ │ │
+│  │  │  │  │  │  radial-gradient follows cursor,      │   │  │ │ │ │
+│  │  │  │  │  │  opacity 0→1 via inkBleed ease        │   │  │ │ │ │
+│  │  │  │  │  └───────────────────────────────────────┘   │  │ │ │ │
+│  │  │  │  └──────────────────────────────────────────────┘  │ │ │ │
+│  │  │  │                                                    │ │ │ │
+│  │  │  │  ┌── corner-bottom-left (SVG, pathLength 0→1) ─┐  │ │ │ │
+│  │  │  │  │                               delay: 300ms   │  │ │ │ │
+│  │  │  │  └──────────────────────────────────────────────┘  │ │ │ │
+│  │  │  │                                                    │ │ │ │
+│  │  │  │  ┌── seal stamp 蔵 ──────────────────────────────┐  │ │ │ │
+│  │  │  │  │  blooms last: scale 0.3→1.0, inkBleed ease,  │  │ │ │ │
+│  │  │  │  │  delay: 200ms                                │  │ │ │ │
+│  │  │  │  └──────────────────────────────────────────────┘  │ │ │ │
+│  │  │  └────────────────────────────────────────────────────┘ │ │ │
+│  │  │                                                       │ │ │
+│  │  └── bottom rod ─────────────────────────────────────────┘ │ │
+│  │                                                            │ │
+│  └────────────────────────────────────────────────────────────┘ │
+│                                                                 │
+│  ┌── caption ─────────────────────────────────────────────────┐ │
+│  │  Title + vermillion underline (width 0→100%, delay: 0ms)  │ │ │
+│  │  Series · Year + small seal mark                          │ │ │
+│  └────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### Reduced Motion Variant
+
+When `prefers-reduced-motion: reduce` is active:
+- No perspective on card wrapper (flat stacking)
+- No mouse tracking for tilt
+- Ink-wash ripple: opacity snaps to 0.05 (static, no animation)
+- Corner accents: opacity fades to 0.3 (no pathLength animation)
+- Seal stamp: simple opacity 0→1 over 200ms, no scale/rotate
+- Shadow: no change on hover
+- Vermillion underline: simple opacity 0→1 (no width animation)
+
+#### Touch Device Behavior
+
+On touch devices (detected via `useMediaQuery('(hover: none)')` or `useReducedMotion`):
+- All hover effects disabled
+- Tap opens lightbox directly
+- No tilt state persists after tap
 
 #### BrushstrokeDivider
 ```
@@ -705,15 +969,38 @@ Framer Motion animate loop:
   }
 ```
 
-### 11.4 Gallery Cards Hover
+### 11.4 Gallery Cards Hover — Tripartite Animation
 
 ```
-Pattern: Subtle tilt when hovering over an artwork card
-Uses onMouseMove to track cursor position within card
-  rotateX: map cursor Y to -1deg to +1deg
-  rotateY: map cursor X to -1deg to +1deg
-  scale: 1.02
-  transition: duration-fast, ease-out-soft
+Pattern: Three coordinated effects that trigger when hovering over an artwork card,
+creating the sensation of the artwork "coming to life" under the viewer's gaze.
+
+#### Effect 1: Parallax Tilt (rotateX/Y)
+  Tilt toward cursor with spring-smooth interpolation.
+  rotateX: map cursor Y to -5deg to +5deg (card tilts forward/back)
+  rotateY: map cursor X to -5deg to +5deg (card tilts left/right)
+  Spring: stiffness 150, damping 15, mass 1
+  On cursor leave: snap to 0 (immediate, no spring — prevents drift)
+
+#### Effect 2: Ink-Wash Ripple
+  A radial gradient overlay on the artwork image that spreads from the cursor
+  position, simulating ink bleeding outward from the point of touch.
+  Gradient: radial at cursor X/Y, sumi at 10%→4%→2%→transparent
+  Opacity: 0→1 via ink-bleed easing (overshoot), 400ms
+  On cursor leave: opacity 1→0, 200ms, linear
+
+#### Effect 3: Brushstroke Corner Frame
+  Two small SVG corner marks at top-right and bottom-left of the card mounting.
+  Top-right: pathLength 0→1, 400ms, brush-stroke ease, delay 100ms
+  Bottom-left: pathLength 0→1, 400ms, brush-stroke ease, delay 300ms
+  On cursor leave: both fade out (opacity 1→0), 200ms, no pathLength reversal
+
+#### Timing Summary (See §8.3 KakejikuCard for full spec):
+  Total hover entry: ~700ms
+  Total hover exit: ~300ms
+  Shadow responds to tilt angle dynamically (see §8.3 for shadow formula)
+  Vermillion underline: width 0→100%, 400ms, inkBleed ease
+  Seal stamp: scale 0.3→1.0, rotate -10°→0°, 500ms, inkBleed, delay 200ms
 ```
 
 ### 11.5 Scroll Progress (Ink Drip)
@@ -850,6 +1137,537 @@ Hooks:        camelCase with 'use' prefix (useMediaQuery, useReducedMotion)
 Utilities:    camelCase (formatDate, fetchArtworks)
 Images:       kebab-case (sudden-shower-atake.jpg, night-snow-kambara.jpg)
 ```
+
+---
+
+## 13. 2.5D Scene Layer System
+
+> *"Not the literal, but the essence. Not the object, but the feeling."*
+> — Applied to the homepage as a layered 2.5D diorama evoking Hiroshige's landscape composition.
+
+### 13.1 Concept & Design Philosophy
+
+The homepage hero transitions from a photographic artwork display into a **living 2.5D ukiyo-e diorama** — 6 illustrated SVG scene layers stacked in CSS 3D perspective space, each at a different `translateZ` depth, moving at independent speeds on scroll and responding to mouse movement.
+
+**Why 2.5D instead of 3D (Three.js):** Staying within the existing constraint of "Framer Motion + CSS transforms only" (see §6, Design Rationale). CSS 3D perspective achieves convincing parallax depth at zero additional bundle cost. The flat-color, bold-outline illustration style of the SVGs harmonizes with the woodblock print aesthetic — printed ukiyo-e works are inherently flat, and the 2.5D treatment respects that flatness while adding spatial depth.
+
+**Design principles for the scene layers:**
+
+| Principle | Application |
+|---|---|
+| **Flat color planes** | Every layer uses solid fills (no gradients except atmospheric haze). Mimics woodblock printing where each color is a separate carved block. |
+| **Bold sumi outlines** | All shapes have thin (1-1.5px) `--sumi` strokes. This is the defining characteristic of ukiyo-e illustration vs. Western painting. |
+| **Compositional depth through overlap** | Layers don't need gradient fade to recede — they simply overlay each other, with nearer layers partially occluding farther ones. |
+| **Negative space (ma)** | The scene layers occupy roughly 40% of the viewport. The remaining 60% is washi-cream negative space — the sky, the empty paper. |
+| **Diagonal asymmetry** | The composition flows on a diagonal from upper-left (distant mountains) to lower-right (foreground pine). This follows Hiroshige's own compositional preference. |
+
+**Rationale:** The 2.5D scene replaces the current purely abstract CSS-gradient ink washes (InkBackground) with specific pictorial content that directly references Hiroshige's iconography. A visitor now sees *mountains, clouds, waves, and pine* — the same motifs that populate Hiroshige's prints — rather than abstract ink blots. This makes the thematic connection explicit and emotionally resonant.
+
+### 13.2 Layer Specifications
+
+Six layers, ordered back-to-front:
+
+| # | Layer | Name (JP) | Z-Index | translateZ | Scroll Speed | SVG File |
+|---|---|---|---|---|---|---|
+| 0 | Distant Mountains | 遠山 (Enzan) | 1 | -600px | 0.05x | `assets/scene-layers/layer-00-distant-mountains.svg` |
+| 1 | Mid-ground Clouds | 雲 (Kumo) | 2 | -400px | 0.15x | `assets/scene-layers/layer-01-clouds.svg` |
+| 2 | Waves / Water | 波 (Nami) | 3 | -200px | 0.30x | `assets/scene-layers/layer-02-waves.svg` |
+| 3 | Foreground Pine | 松 (Matsu) | 4 | 50px | 0.50x | `assets/scene-layers/layer-03-pine-branch.svg` |
+| 4 | Falling Petals | 花 (Hana) | 5 | 150px | 0.60x | `assets/scene-layers/layer-04-petals.svg` |
+| 5 | Vermillion Seal | 朱印 (Shu-in) | 6 | 250px | 0.70x | `assets/scene-layers/layer-05-seal.svg` |
+
+#### Layer 0: Distant Mountains (遠山)
+
+```
+Purpose: Farthest background — establishes the horizon and geographic setting
+Content:
+  • Three receding mountain ranges at decreasing opacity
+  • Mt. Fuji silhouette at center with snow cap (washi-cream)
+  • Tiny pine silhouettes on ridge lines
+  • 5-6 flying birds in V-formation (classic ukiyo-e detail)
+  • Subtle horizon haze line
+Colors: --mist at 4-8%, --sumi outlines at 8-18%, --washi for snow cap at 50%
+Opacity (total layer): 30-50% of normal — recedes into mist
+```
+
+#### Layer 1: Mid-ground Clouds (雲)
+
+```
+Purpose: Divides the composition into depth planes — clouds partially obscure mountains
+Content:
+  • 5 horizontal cloud bands with characteristic ukiyo-e curled "fist" ends
+  • Clouds at varying heights and widths
+  • Thin mist/haze lines between cloud bands
+  • Subtle shadow line beneath main cloud for depth
+Colors: --washi fill at 75-90%, --sumi outlines at 10-15%
+Opacity (total layer): 60-80%
+```
+
+#### Layer 2: Waves / Water (波)
+
+```
+Purpose: Mid-ground water body with stylized wave patterns — references Hiroshige's water motifs
+Content:
+  • 3 rows of curved wave arcs at increasing scale
+  • Foreground row: larger claw-shaped wave curves with spray detail
+  • Foam crests: small white circles at wave peaks
+  • Fine spray droplets above breaking waves
+  • Water body: subtle indigo-blue wash (Prussian blue — Hiroshige's signature color)
+Colors: --info/indigo (#5A7A9A) at 6% for water, --sumi outlines at 12-20%,
+        --washi for foam at 35-60%
+Opacity (total layer): 50-70%
+```
+
+#### Layer 3: Foreground Pine (松)
+
+```
+Purpose: Foreground framing element (maegaki) — creates extreme depth through overlap
+Content:
+  • Main trunk entering from right edge, angling down-left
+  • 2 sub-branches forking off at different angles
+  • 4 needle clusters at branch tips (radial arrangement of fine lines)
+  • Scattered individual needles for organic feel
+  • Small pine cone detail on main branch
+Colors: --sumi-deep at 28-35% for trunk, --sumi at 15-30% for needles
+Opacity (total layer): 60-85%
+```
+
+#### Layer 4: Falling Petals (花)
+
+```
+Purpose: Animated foreground particles — adds life and impermanence (mujō) theme
+Content:
+  • SVG <defs> defines two particle shapes: sakura petal (pink) and snow (white)
+  • 12-15 particle instances positioned at runtime by Framer Motion
+  • Each particle has: drift path, rotation, fade-in/out cycle
+  • Dark mode: petals replaced by snow particles (white circles with cross)
+Colors: Petals: #E8C8C0 (pale cherry blossom), Snow: --washi at 50%
+Opacity (total layer): 40-60%
+```
+
+#### Layer 5: Vermillion Seal (朱印)
+
+```
+Purpose: Atmospheric watermark — feels like looking through a sealed scroll
+Content:
+  • Large rectangular seal (~120×120px) with irregular "worn" edges
+  • Inner border inset 8px
+  • Kanji: 広重 (Hiroshige) in simplified seal-script (tensho) style
+  • Secondary smaller circular seal (蔵) at bottom-left for compositional balance
+Colors: --vermillion at 6-15% (watermark opacity, not full seal color)
+Opacity (total layer): 30-50%
+```
+
+### 13.3 Depth Map & Perspective System
+
+#### CSS Perspective Container
+
+```css
+.scene-container {
+  perspective: 1500px;         /* Focal length for 3D transforms */
+  perspective-origin: 50% 40%; /* Slightly above center — looking up at scene */
+  transform-style: preserve-3d;
+}
+```
+
+**How perspective + translateZ creates parallax:**
+
+When the container rotates (on mouse move), each layer at a different `translateZ` moves by a different apparent amount on screen. An element at `translateZ(-600px)` moves very little (appears far away), while an element at `translateZ(250px)` moves noticeably more (appears close). This creates the 3D depth illusion without manual X/Y offset calculations.
+
+#### Per-Layer Transform Map
+
+```
+Layer 0 (Mountains):   translateZ(-600px) scale(1.6)  — appears very far, small
+Layer 1 (Clouds):      translateZ(-400px) scale(1.4)  — farther
+Layer 2 (Waves):       translateZ(-200px) scale(1.15) — moderate distance
+Layer 3 (Pine):        translateZ(50px)   scale(0.95) — slightly close
+Layer 4 (Petals):      translateZ(150px)  scale(0.9)  — near
+Layer 5 (Seal):        translateZ(250px)  scale(0.85) — closest
+
+Scaling compensates for perspective foreshortening:
+  Elements at negative translateZ would appear smaller, so we scale up.
+  Elements at positive translateZ would appear larger, so we scale down.
+```
+
+#### Z-Index Stack
+
+```
+Scene Container (fixed, inset-0, z-index: 0, pointer-events: none)
+  ├── Layer 0: Mountains   (z: 1)
+  ├── Layer 1: Clouds      (z: 2)
+  ├── Layer 2: Waves       (z: 3)
+  ├── Layer 3: Pine        (z: 4)
+  ├── Layer 4: Petals      (z: 5)
+  └── Layer 5: Seal        (z: 6)
+
+Content Overlay (relative, z-index: 10)
+  ├── Hero title + subtitle
+  ├── Floating Artwork Cards (positioned at various depths)
+  ├── Section content
+  └── Footer
+```
+
+### 13.4 Artwork Card Integration (Floating Kakejiku Windows)
+
+Instead of a flat grid, featured artwork cards are placed as **floating kakejiku "windows"** positioned at different depths among the scene layers.
+
+#### Positioning Strategy
+
+| Card | Position | Depth | Size | Scene Context |
+|---|---|---|---|---|
+| 1. Sudden Shower | Upper-mid left | translateZ(-300px) | 280×200 | Among clouds, partially obscured |
+| 2. Plum Park | Center | translateZ(-100px) | 320×230 | Floating above waves |
+| 3. Night Snow | Right | translateZ(-50px) | 300×215 | Between cloud bands |
+| 4. Naruto Whirlpool | Lower-left | translateZ(80px) | 340×240 | Near the water |
+| 5. Fireworks | Upper-right | translateZ(-400px) | 240×170 | Distant, small (in the sky) |
+| 6-10 | Below the scene | normal flow | normal | Standard KakejikuCard grid below the hero |
+
+**Rationale for reducing visible floating cards from 10 to 5-6:** Only the most visually striking artworks appear as "floating windows" in the scene. The remaining 4-5 appear below the hero as a standard grid. This prevents visual overload and gives each floating card room to breathe.
+
+#### Floating Window Behavior
+
+Each floating artwork card inherits the KakejikuCard design (§8.3) with these additions:
+
+```
+1. Depth offset:  Each card sits at a unique translateZ within the perspective container
+2. Sinusoidal drift:  Gentle y-axis oscillation (amplitude 3-6px, period 5-8s)
+3. Mouse tilt:  Subtle rotateX/Y following cursor (half the intensity of the scene)
+4. Scroll reveal:  Cards fade in + drift up as they reach their scroll position
+5. Opacity blend:  Cards at negative translateZ get subtle --mist overlay (atmospheric perspective)
+6. No hover tilt on mobile:  Touch devices skip mouse tracking
+```
+
+#### Atmospheric Perspective Rule
+
+Cards positioned at more negative `translateZ` (farther away) receive:
+- `filter: brightness(0.85) saturate(0.7)` — desaturated and dimmed
+- `opacity: 0.7` — slightly transparent
+
+This simulates how distant objects appear in atmospheric haze (a technique Hiroshige mastered).
+
+### 13.5 Interaction Behaviors
+
+#### Scroll Parallax
+
+```
+Each layer uses Framer Motion useScroll + useTransform:
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start'],
+  })
+
+  Layer scroll speeds (applied as translateY):
+    Layer 0 (Mountains): useTransform(scrollYProgress, [0, 1], [0, 40])
+    Layer 1 (Clouds):    useTransform(scrollYProgress, [0, 1], [0, 100])
+    Layer 2 (Waves):     useTransform(scrollYProgress, [0, 1], [0, 200])
+    Layer 3 (Pine):      useTransform(scrollYProgress, [0, 1], [0, 350])
+    Layer 4 (Petals):    useTransform(scrollYProgress, [0, 1], [0, 420])
+    Layer 5 (Seal):      useTransform(scrollYProgress, [0, 1], [0, 500])
+
+  Combined transform per layer:
+    style={{ transform: `translateY(${scrollY}px) translateZ(${z}px) scale(${s})` }}
+```
+
+**Rationale:** Scroll speeds increase linearly with proximity. The mountains barely move (0.05×), while the seal scrolls at 0.7× the page scroll rate. This matches real-world parallax where distant objects shift less than close ones.
+
+#### Mouse-Move Parallax (CSS 3D)
+
+```
+Container: perspective(1500px) on the scene wrapper
+
+On mouse move:
+  • Map cursor position (0-1 normalized) to rotateX(-2deg to 2deg), rotateY(-2deg to 2deg)
+  • Use useSpring for smooth interpolation (stiffness: 100, damping: 30)
+  • Each layer's translateZ creates differential movement automatically
+  • Reduced motion: skip all mouse tracking, no perspective on container
+
+Code pattern (see existing HeroParallax.tsx useParallax pattern):
+  const springX = useSpring(mouseX, { stiffness: 100, damping: 30 })
+  const rotateY = useTransform(springX, [-5, 5], [-2, 2])
+```
+
+#### Scroll-Into-View Card Tilt
+
+Cards below the hero section tilt on scroll entry — a subtle 3D "wake-up" effect:
+
+```
+Framer Motion variant:
+  hidden: { opacity: 0, y: 60, rotateX: 15, transformPerspective: 1000 }
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+  }
+  viewport: { once: true, margin: '-50px' }
+```
+
+**Rationale:** The rotateX gives a subtle "flipping up" feel, like a print being lifted from a stack. The perspective foreshortening makes the bottom edge appear closer briefly before the card settles flat. This is imperceptible on conscious level but contributes to the overall materiality.
+
+#### Petal Animation
+
+```
+Each petal instance (12-15 total) gets a randomized Framer Motion loop:
+
+  animate: {
+    y: ['-10vh', '110vh'],           // Fall from above viewport to below
+    x: [0, drift*0.3, drift, drift*0.5, 0],  // Horizontal drift with curve
+    rotate: [start, start+180, start+360],     // Spiral rotation
+    opacity: [0, 0.5, 0.4, 0.3, 0]            // Fade in/out
+  }
+  transition: {
+    duration: 10-20s (randomized),
+    repeat: Infinity,
+    delay: 0-15s (staggered start),
+    ease: 'linear'
+  }
+
+Petals pause on hover:  The scene container can pause particle animations
+on mouse enter (reduced cognitive load when reading).
+
+Mobile: 0 petals. Reduced motion: 0 petals.
+```
+
+### 13.6 3D Depth Cues Throughout the Page
+
+Beyond the hero scene, the entire page gains subtle 3D enhancements:
+
+#### Layered Section Dividers
+
+Brushstroke dividers and horizontal section separators gain layered shadows that create the illusion of stacked paper:
+
+```css
+.section-divider-deep {
+  box-shadow:
+    0 2px 4px rgba(var(--sumi-rgb), 0.06),    /* tight shadow */
+    0 8px 16px rgba(var(--sumi-rgb), 0.04),   /* mid shadow */
+    0 20px 40px rgba(var(--sumi-rgb), 0.02);  /* wide wash shadow */
+}
+```
+
+**Rationale:** Multiple box-shadows at increasing blur/distances simulate how ink spreads on paper layers. Each shadow is progressively wider and lighter, mimicking the "ink bleed" effect of sumi-e on absorbent paper.
+
+#### Navigation Depth
+
+The sticky navigation bar gains a subtle bottom shadow that intensifies on scroll:
+
+```css
+.nav-shadow-scrolled {
+  box-shadow:
+    0 1px 2px rgba(var(--sumi-rgb), 0.04),
+    0 4px 12px rgba(var(--sumi-rgb), 0.03);
+}
+```
+
+The shadow appears only after the user scrolls past the hero — it's absent at page top (where the nav floats above the scene).
+
+#### Footer Depth
+
+The footer receives a subtle top shadow that separates it from the content above, creating a sense of it being a "base" layer:
+
+```css
+footer {
+  box-shadow:
+    0 -1px 2px rgba(var(--sumi-rgb), 0.03),
+    0 -4px 12px rgba(var(--sumi-rgb), 0.04);
+}
+```
+
+### 13.7 Component Architecture Updates
+
+#### New Components
+
+Add to the compositions tier:
+
+| Component | Purpose | Props |
+|---|---|---|
+| `SceneContainer` | Root wrapper: CSS perspective container, mouse tracking, scroll tracking | `children` |
+| `SceneLayer` | Single 2.5D layer: SVG asset, translateZ, scroll speed, opacity | `layerIndex`, `svgPath`, `zDepth`, `scrollSpeed`, `opacity` |
+| `FloatingArtworkCard` | KakejikuCard variant positioned at a specific depth in the scene | `artwork`, `zDepth`, `position`, `driftAmplitude` |
+
+#### Modified Components
+
+| Component | Change |
+|---|---|
+| `HeroParallax` | Scene layers replace abstract CSS-gradient parallax layers. Integrates `SceneContainer` + 6× `SceneLayer` + `FloatingArtworkCard` × 5-6. Title/subtitle remain as foreground overlay. |
+| `InkBackground` | Reduced role: now only provides the washi-cream base background `--ink-bg` CSS. The radial gradient washes remain as texture behind the scene layers. |
+| `BrushstrokeDivider` | Gains `className` prop for `section-divider-deep` shadow variant. |
+| `KakejikuCard` | Gains `perspective` variant — tilt-on-scroll-into-view via `rotateX` variant. New prop: `tiltOnScroll?: boolean`. |
+
+#### Component Dependency Tree (Updated Home Page)
+
+```
+HomePage (Server Component)
+├── InkBackground (CSS base only — washi texture)
+├── SceneContainer (Client) — wrapper with perspective + mouse tracking
+│   ├── SceneLayer (Layer 0: Mountains)
+│   ├── SceneLayer (Layer 1: Clouds)
+│   ├── SceneLayer (Layer 2: Waves)
+│   ├── SceneLayer (Layer 3: Pine)
+│   ├── SceneLayer (Layer 4: Petals) — with Framer Motion particle instances
+│   ├── SceneLayer (Layer 5: Seal)
+│   └── FloatingArtworkCard × 5-6 — at various depths
+├── Hero Title + Subtitle (foreground overlay, z-index: 20)
+├── FeaturedArtworksSection (remaining 4-5 artworks)
+│   └── KakejikuCard × 4-5 (with tiltOnScroll variant)
+├── Section dividers (with layered shadow tokens)
+├── Artist Section
+└── Series Overview Section
+```
+
+### 13.8 Updated Motion Tokens
+
+Add to `lib/animations.ts`:
+
+```typescript
+// ─── 2.5D Scene Tokens ─────────────────────────────────────────────
+
+/** Scene layer scroll speeds (Y displacement per scroll unit) */
+export const layerScrollSpeeds = [0.05, 0.15, 0.3, 0.5, 0.6, 0.7] as const
+
+/** Scene layer Z depths */
+export const layerZDepths = [-600, -400, -200, 50, 150, 250] as const
+
+/** Layer scale factors (compensating for perspective) */
+export const layerScales = [1.6, 1.4, 1.15, 0.95, 0.9, 0.85] as const
+
+/** Scene perspective settings */
+export const scenePerspective = {
+  container: 1500,
+  originX: 50,
+  originY: 40,
+  mouseRotateRange: 2, // degrees
+  springStiffness: 100,
+  springDamping: 30,
+} as const
+
+// ─── Floating Artwork Tokens ────────────────────────────────────────
+
+export const floatingCardConfigs = [
+  { zDepth: -300, x: '15%', y: '20%', scale: 0.75, driftAmp: 4, driftPeriod: 6 },
+  { zDepth: -100, x: '40%', y: '35%', scale: 0.85, driftAmp: 5, driftPeriod: 7 },
+  { zDepth: -50,  x: '68%', y: '25%', scale: 0.8,  driftAmp: 3, driftPeriod: 5 },
+  { zDepth: 80,   x: '22%', y: '55%', scale: 0.9,  driftAmp: 6, driftPeriod: 8 },
+  { zDepth: -400, x: '72%', y: '12%', scale: 0.65, driftAmp: 3, driftPeriod: 5 },
+] as const
+
+// ─── Scroll-View Tilt ───────────────────────────────────────────────
+
+export const tiltOnScrollVariants: Variants = {
+  hidden: { opacity: 0, y: 60, rotateX: 15, transformPerspective: 1000 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    transition: { duration: 0.8, ease: softEase },
+  },
+}
+
+// ─── Card Hover (Tripartite) — See §8.3 for full spec ─────────────
+
+/** Parallax tilt range in degrees */
+export const cardTiltRange = 5 as const
+
+/** Spring config for smooth card tilt interpolation */
+export const cardTiltSpring = {
+  stiffness: 150,
+  damping: 15,
+  mass: 1,
+} as const
+
+/** Ink-wash ripple: radial gradient centered on cursor position */
+export const inkWashGradient = (x: number, y: number): string =>
+  `radial-gradient(circle at ${x}% ${y}%, rgba(var(--sumi-rgb), 0.10) 0%, rgba(var(--sumi-rgb), 0.04) 20%, rgba(var(--sumi-rgb), 0.02) 40%, transparent 65%)`
+
+/** Stamp bloom — delayed ink-bleed flourish */
+export const sealBloomVariants: Variants = {
+  rest: { opacity: 0, scale: 0.3, rotate: -10 },
+  hover: {
+    opacity: 1,
+    scale: 1,
+    rotate: 0,
+    transition: { duration: 0.5, ease: inkBleed, delay: 0.2 },
+  },
+}
+
+/** Vermillion underline draw */
+export const underlineVariants: Variants = {
+  rest: { scaleX: 0 },
+  hover: {
+    scaleX: 1,
+    transition: { duration: 0.4, ease: inkBleed },
+  },
+}
+```
+
+### 13.9 Graphics Asset Index
+
+The 6 SVG scene layer files reside in `assets/scene-layers/`:
+
+| File | Contents | ViewBox |
+|---|---|---|
+| `layer-00-distant-mountains.svg` | 3 mountain ranges, Mt. Fuji, birds, haze | `0 0 1440 900` |
+| `layer-01-clouds.svg` | 5 cloud bands with curled ends, mist lines | `0 0 1440 900` |
+| `layer-02-waves.svg` | 3 rows of wave curves, foam crests, spray | `0 0 1440 900` |
+| `layer-03-pine-branch.svg` | Trunk, 2 sub-branches, 4 needle clusters, pine cone | `0 0 1440 900` |
+| `layer-04-petals.svg` | Sakura petal + snow particle `<defs>` shapes | `0 0 1440 900` |
+| `layer-05-seal.svg` | Hiroshige seal (広重) + secondary round seal (蔵) | `0 0 1440 900` |
+
+Each SVG is designed as a **flat, inline-able asset**. The component inlines the SVG markup directly (no `<img>` loading — enables path animation and CSS variable color access). Colors reference CSS variables `var(--sumi)`, `var(--washi)`, etc. through `rgba()` with the appropriate RGB triplets.
+
+### 13.10 Dark Mode Scene Variants
+
+Dark mode transforms the scene from a daylight landscape to a **moonlit night scene** — referencing Hiroshige's famous night prints (Night Snow at Kambara, Sudden Shower, Moon Pine at Ueno).
+
+| Layer | Dark Mode Change |
+|---|---|
+| Mountains | Opacity reduced by 30%. Haze color shifts to cool `--info` blue. Birds removed. |
+| Clouds | Fill shifts from `--washi` to `rgba(44,40,36,0.7)` (dark charcoal). Outlines at 25% opacity. |
+| Waves | Indigo water intensifies (opacity doubles). Foam crests shift to pale blue-white. |
+| Pine | Trunk opacity increases (against lighter dark background). Needles reduce opacity. |
+| Petals | Cherry blossom replaced by snow particles (white circles with cross). |
+| Seal | Vermillion opacity reduces to 4-6%. Becomes a subtle moon-like watermark. |
+
+**Implementation approach:** Each SceneLayer accepts a CSS class that applies dark-mode overrides via CSS custom properties on the SVG elements. No separate SVG files needed — the existing SVGs use relative colors that adapt via CSS variable changes in the `.dark` class.
+
+### 13.11 Accessibility & Reduced Motion
+
+```
+Reduced motion behaviors:
+  1. Scene parallax disabled:  All layers render at their base translateZ with no scroll or mouse movement.
+  2. Petal particles removed:  FloatingPetals count = 0.
+  3. Floating artwork drift:  No sinusoidal y-oscillation. Cards remain static.
+  4. Card scroll-tilt:  rotateX variant skipped — cards fade in with opacity only.
+  5. Mouse tracking:  No event listeners attached for mouse parallax.
+  6. Scene container:  No perspective CSS property set — flat stacking.
+
+ARIA considerations:
+  • Scene container: role="presentation", aria-hidden="true"
+  • All scene layers: aria-hidden="true" (decorative, not content)
+  • Floating artwork cards: retain their full ARIA as interactive elements
+  • Scene does not interfere with keyboard navigation or tab order
+```
+
+### 13.12 Implementation Notes for Frontend Mode
+
+1. **Inline SVGs**: Import each layer SVG as a string or embed the markup directly in the SceneLayer component. Do NOT use `<Image>` or `<img>` — inline SVGs enable CSS variable access and potential future path animation.
+
+2. **Layer layout**: Each SceneLayer is `absolute inset-0` within the SceneContainer, with its own `transform: translateZ() scale()` and scroll-driven `translateY`.
+
+3. **Mouse tracking**: Attach `onMouseMove` to the SceneContainer (not `window` — this scopes the effect to the hero section and prevents interference with other page interactions).
+
+4. **Scroll tracking**: `useScroll` with `target: sceneContainerRef`, `offset: ['start start', 'end start']`. The scene container should span at minimum `200vh` height (current hero pattern) so there's enough scroll distance for the parallax to unfold.
+
+5. **Floating artwork cards**: Use Framer Motion `animate` loops for the sinusoidal drift. Each card gets a unique random seed for period/amplitude/delay (use `useMemo` with stable random per card ID).
+
+6. **Dark mode CSS**: Layer SVGs use `rgba(var(--sumi-rgb), X)` patterns so they automatically respond to dark mode CSS variable changes.
+
+7. **Performance**: 
+   - Use `will-change: transform` on each SceneLayer
+   - Petal count: 12 max (reduced from current 15)
+   - All transforms are GPU-composited (no layout triggers)
+   - `transform: translate3d()` for hardware acceleration
 
 ---
 

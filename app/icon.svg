@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Vermillion seal stamp background -->
+  <rect x="0.5" y="0.5" width="31" height="31" rx="5" fill="#A8382E"/>
+  <!-- Inner white border (traditional seal gap) -->
+  <rect x="3.5" y="3.5" width="25" height="25" rx="3" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.55"/>
+  <!-- Kanji: 広 (Hiroshige's first character, bold for legibility at small sizes) -->
+  <text x="16" y="22.5" text-anchor="middle" fill="#FFFFFF" font-size="18" font-family="'Noto Serif JP', 'Yu Mincho', serif" font-weight="700">広</text>
+</svg>
