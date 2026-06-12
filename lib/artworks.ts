@@ -16,7 +16,7 @@ export async function getFeaturedArtworks(): Promise<Artwork[]> {
 
 export async function getAllArtworks(series?: string): Promise<Artwork[]> {
   try {
-    const query = series && series !== 'all' ? `?series=${series}` : ''
+    const query = series && series !== 'all' ? `?series=${encodeURIComponent(series)}` : ''
     const data = await fetchApi<{ artworks: Artwork[] }>(`/artworks${query}`)
     return data.artworks
   } catch {

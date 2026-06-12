@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
@@ -18,6 +18,17 @@ interface Petal {
 export function FloatingPetals({ count = 15 }: { count?: number }) {
   const isMobile = useMediaQuery('(max-width: 768px)')
   const reduced = useReducedMotion()
+  const [mounted, setMounted] = useState(false)
+
+  // Defer rendering until after initial paint so petals don't block LCP
+  useEffect(() => {
+    const id = requestIdleCallback(() => setMounted(true))
+    const fallback = setTimeout(() => setMounted(true), 200)
+    return () => {
+      cancelIdleCallback(id)
+      clearTimeout(fallback)
+    }
+  }, [])
 
   const petals = useMemo<Petal[]>(() => {
     if (isMobile || reduced) return []
@@ -34,6 +45,7 @@ export function FloatingPetals({ count = 15 }: { count?: number }) {
   }, [count, isMobile, reduced])
 
   if (isMobile || reduced) return null
+  if (!mounted) return null
 
   return (
     <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden" aria-hidden="true">

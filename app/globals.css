@@ -6,30 +6,30 @@
 
 :root {
   /* Hex values — for CSS gradients and direct var() references */
-  --sumi: #1A1A1A;
-  --sumi-deep: #2C2C28;
-  --washi: #F5F0E8;
-  --washi-light: #E8E3DA;
-  --washi-medium: #D4CFC4;
-  --vermillion: #C0392B;
-  --gold: #C9A84C;
-  --mist: #766C62;
-  --error: #B73229;
-  --success: #2D6B3E;
-  --info: #4A6E8C;
+  --sumi: #2A2520;
+  --sumi-deep: #1E1A15;
+  --washi: #EFE8D5;
+  --washi-light: #E3DCC8;
+  --washi-medium: #CCC4B0;
+  --vermillion: #A8382E;
+  --gold: #B8985C;
+  --mist: #6B6358;
+  --error: #A33A2E;
+  --success: #3D7A4E;
+  --info: #5A7A9A;
 
   /* RGB triplets — for Tailwind opacity support (e.g. bg-sumi/80) */
-  --sumi-rgb: 26, 26, 26;
-  --sumi-deep-rgb: 44, 44, 40;
-  --washi-rgb: 245, 240, 232;
-  --washi-light-rgb: 232, 227, 218;
-  --washi-medium-rgb: 212, 207, 196;
-  --vermillion-rgb: 192, 57, 43;
-  --gold-rgb: 201, 168, 76;
-  --mist-rgb: 118, 108, 98;
-  --error-rgb: 183, 50, 41;
-  --success-rgb: 45, 107, 62;
-  --info-rgb: 74, 110, 140;
+  --sumi-rgb: 42, 37, 32;
+  --sumi-deep-rgb: 30, 26, 21;
+  --washi-rgb: 239, 232, 213;
+  --washi-light-rgb: 227, 220, 200;
+  --washi-medium-rgb: 204, 196, 176;
+  --vermillion-rgb: 168, 56, 46;
+  --gold-rgb: 184, 152, 92;
+  --mist-rgb: 107, 99, 88;
+  --error-rgb: 163, 58, 46;
+  --success-rgb: 61, 122, 78;
+  --info-rgb: 90, 122, 154;
 
   /* Ink wash background — layered radial gradients */
   --ink-bg:

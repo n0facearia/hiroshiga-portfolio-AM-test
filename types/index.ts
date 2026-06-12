@@ -1,4 +1,10 @@
-export type Series = 'Tōkaidō' | 'Edo' | 'Other'
+export type Series =
+  | 'Fifty-Three Stations of the Tōkaidō'
+  | 'One Hundred Famous Views of Edo'
+  | 'Eight Views of Ōmi'
+  | 'Famous Places of Kyōto'
+  | 'Thirty-six Views of Mount Fuji'
+  | 'The Sixty-nine Stations of the Kisokaidō'
 
 export interface Artwork {
   id: number
@@ -10,6 +16,8 @@ export interface Artwork {
   description: string
   wikimedia_url: string
   wikimedia_thumb?: string
+  source_url?: string
+  attribution?: string
   tags: string
   is_featured: boolean
   display_order: number

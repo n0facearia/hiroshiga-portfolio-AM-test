@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { EB_Garamond, Noto_Serif_JP, Noto_Sans_JP, Yuji_Syuku } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import { Navigation } from '@/components/Navigation'
 import { Footer } from '@/components/Footer'
@@ -8,30 +8,40 @@ import { CustomCursor } from '@/components/CustomCursor'
 import { ScrollProgress } from '@/components/ScrollProgress'
 import { ThemeProvider } from '@/lib/theme-context'
 
-const displayFont = EB_Garamond({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+const displayFont = localFont({
+  src: [
+    { path: './fonts/eb-garamond-400.ttf', weight: '400', style: 'normal' },
+    { path: './fonts/eb-garamond-500.ttf', weight: '500', style: 'normal' },
+    { path: './fonts/eb-garamond-600.ttf', weight: '600', style: 'normal' },
+    { path: './fonts/eb-garamond-700.ttf', weight: '700', style: 'normal' },
+  ],
   variable: '--font-display',
   display: 'swap',
 })
 
-const displayJpFont = Noto_Serif_JP({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+const displayJpFont = localFont({
+  src: [
+    { path: './fonts/noto-serif-jp-400.ttf', weight: '400', style: 'normal' },
+    { path: './fonts/noto-serif-jp-500.ttf', weight: '500', style: 'normal' },
+    { path: './fonts/noto-serif-jp-600.ttf', weight: '600', style: 'normal' },
+    { path: './fonts/noto-serif-jp-700.ttf', weight: '700', style: 'normal' },
+  ],
   variable: '--font-display-jp',
   display: 'swap',
 })
 
-const bodyFont = Noto_Sans_JP({
-  subsets: ['latin'],
-  weight: ['300', '400', '500'],
+const bodyFont = localFont({
+  src: [
+    { path: './fonts/noto-sans-jp-300.ttf', weight: '300', style: 'normal' },
+    { path: './fonts/noto-sans-jp-400.ttf', weight: '400', style: 'normal' },
+    { path: './fonts/noto-sans-jp-500.ttf', weight: '500', style: 'normal' },
+  ],
   variable: '--font-body',
   display: 'swap',
 })
 
-const accentFont = Yuji_Syuku({
-  subsets: ['latin'],
-  weight: ['400'],
+const accentFont = localFont({
+  src: [{ path: './fonts/yuji-syuku-400.ttf', weight: '400', style: 'normal' }],
   variable: '--font-accent',
   display: 'swap',
 })

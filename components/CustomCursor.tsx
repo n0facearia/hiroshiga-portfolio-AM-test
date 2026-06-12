@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 interface Drop {
@@ -14,9 +14,20 @@ interface Drop {
 export function CustomCursor() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const isTouch = useMediaQuery('(hover: none) and (pointer: coarse)')
+  const [ready, setReady] = useState(false)
+
+  // Defer canvas creation until after initial paint
+  useEffect(() => {
+    const id = requestIdleCallback(() => setReady(true))
+    const fallback = setTimeout(() => setReady(true), 300)
+    return () => {
+      cancelIdleCallback(id)
+      clearTimeout(fallback)
+    }
+  }, [])
 
   useEffect(() => {
-    if (isTouch) return
+    if (isTouch || !ready) return
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -102,9 +113,10 @@ export function CustomCursor() {
       window.removeEventListener('mousemove', handleMouseMove)
       cancelAnimationFrame(rafId)
     }
-  }, [isTouch])
+  }, [isTouch, ready])
 
   if (isTouch) return null
+  if (!ready) return null
 
   return (
     <canvas

@@ -65,12 +65,22 @@ describe('getAllArtworks', () => {
     expect(fetchApi).toHaveBeenCalledWith('/artworks')
   })
 
-  it('fetches from /artworks?series=Edo when series filter is provided', async () => {
+  it('fetches from /artworks?series=... when series filter is provided', async () => {
     vi.mocked(fetchApi).mockResolvedValue({ artworks: [] })
 
     await getAllArtworks('Edo')
 
     expect(fetchApi).toHaveBeenCalledWith('/artworks?series=Edo')
+  })
+
+  it('URL-encodes series names with special characters', async () => {
+    vi.mocked(fetchApi).mockResolvedValue({ artworks: [] })
+
+    await getAllArtworks('Eight Views of Ōmi')
+
+    expect(fetchApi).toHaveBeenCalledWith(
+      '/artworks?series=Eight%20Views%20of%20%C5%8Cmi'
+    )
   })
 
   it('returns all fallback artworks on API failure with no filter', async () => {
@@ -84,10 +94,10 @@ describe('getAllArtworks', () => {
   it('returns filtered fallback on API failure when series is provided', async () => {
     vi.mocked(fetchApi).mockRejectedValue(new Error('API error'))
 
-    const result = await getAllArtworks('Edo')
+    const result = await getAllArtworks('One Hundred Famous Views of Edo')
 
     const expected = FALLBACK_ARTWORKS.filter(
-      (a) => a.series.toLowerCase() === 'edo',
+      (a) => a.series.toLowerCase() === 'one hundred famous views of edo',
     )
     expect(result).toEqual(expected)
   })

@@ -52,11 +52,18 @@ describe('GET /api/artworks', () => {
     expect(artwork).toHaveProperty('display_order')
   })
 
-  it('maps series names to short codes', async () => {
+  it('returns series names from the database unchanged', async () => {
     const res = await request(app).get('/api/artworks')
 
-    for (const artwork of res.body.artworks) {
-      expect(['Edo', 'Tōkaidō', 'Other']).toContain(artwork.series)
+    const seriesSet = new Set(res.body.artworks.map((a: { series: string }) => a.series))
+    // All returned series should be one of the known DB values
+    const knownSeries = [
+      'One Hundred Famous Views of Edo',
+      'Fifty-Three Stations of the Tōkaidō',
+      'Famous Views of the Sixty-odd Provinces',
+    ]
+    for (const s of seriesSet) {
+      expect(knownSeries).toContain(s)
     }
   })
 
@@ -93,29 +100,83 @@ describe('GET /api/artworks?featured=true', () => {
 })
 
 describe('GET /api/artworks?series=', () => {
-  it('filters by series short code (Tōkaidō)', async () => {
-    const res = await request(app).get('/api/artworks?series=Tōkaidō')
+  it('filters by full series name (Fifty-Three Stations of the Tōkaidō)', async () => {
+    const res = await request(app).get(
+      '/api/artworks?series=Fifty-Three Stations of the Tōkaidō'
+    )
 
     expect(res.status).toBe(200)
     for (const artwork of res.body.artworks) {
-      expect(artwork.series).toBe('Tōkaidō')
+      expect(artwork.series).toBe('Fifty-Three Stations of the Tōkaidō')
     }
   })
 
-  it('filters by series short code (Edo)', async () => {
-    const res = await request(app).get('/api/artworks?series=Edo')
+  it('filters by full series name (One Hundred Famous Views of Edo)', async () => {
+    const res = await request(app).get(
+      '/api/artworks?series=One Hundred Famous Views of Edo'
+    )
 
     expect(res.status).toBe(200)
     for (const artwork of res.body.artworks) {
-      expect(artwork.series).toBe('Edo')
+      expect(artwork.series).toBe('One Hundred Famous Views of Edo')
     }
   })
 
-  it('returns all artworks for unknown series filter', async () => {
-    const resAll = await request(app).get('/api/artworks')
-    const resFiltered = await request(app).get('/api/artworks?series=Unknown')
+  it('handles URL-encoded Unicode characters in series filter (Tōkaidō)', async () => {
+    const res = await request(app).get(
+      '/api/artworks?series=Fifty-Three+Stations+of+the+T%C5%8Dkaid%C5%8D'
+    )
 
-    expect(resFiltered.body.artworks).toHaveLength(resAll.body.artworks.length)
+    expect(res.status).toBe(200)
+    expect(res.body.artworks.length).toBeGreaterThan(0)
+    for (const artwork of res.body.artworks) {
+      expect(artwork.series).toBe('Fifty-Three Stations of the Tōkaidō')
+    }
+  })
+
+  it('returns empty array when series filter matches no known series', async () => {
+    const res = await request(app).get('/api/artworks?series=Unknown')
+
+    expect(res.status).toBe(200)
+    expect(res.body.artworks).toEqual([])
+  })
+})
+
+describe('GET /api/artworks/series', () => {
+  it('returns distinct series list', async () => {
+    const res = await request(app).get('/api/artworks/series')
+
+    expect(res.status).toBe(200)
+    expect(res.body).toHaveProperty('series')
+    expect(Array.isArray(res.body.series)).toBe(true)
+    expect(res.body.series.length).toBeGreaterThanOrEqual(3)
+  })
+})
+
+describe('GET /api/artworks/series/:seriesName', () => {
+  it('filters by series name in path param', async () => {
+    const res = await request(app).get(
+      '/api/artworks/series/Fifty-Three Stations of the Tōkaidō'
+    )
+
+    expect(res.status).toBe(200)
+    expect(res.body).toHaveProperty('artworks')
+    expect(res.body.artworks.length).toBeGreaterThan(0)
+    for (const artwork of res.body.artworks) {
+      expect(artwork.series).toBe('Fifty-Three Stations of the Tōkaidō')
+    }
+  })
+
+  it('filters by URL-encoded series name with Unicode (Tōkaidō)', async () => {
+    const res = await request(app).get(
+      '/api/artworks/series/Fifty-Three%20Stations%20of%20the%20T%C5%8Dkaid%C5%8D'
+    )
+
+    expect(res.status).toBe(200)
+    expect(res.body.artworks.length).toBeGreaterThan(0)
+    for (const artwork of res.body.artworks) {
+      expect(artwork.series).toBe('Fifty-Three Stations of the Tōkaidō')
+    }
   })
 })
 

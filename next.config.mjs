@@ -1,13 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'upload.wikimedia.org',
-        pathname: '/**',
-      },
-    ],
+    // Allow local images from public/ — the default, explicit for clarity
+    unoptimized: false,
   },
 }
 

@@ -151,7 +151,8 @@ export function HeroParallax({ artworks }: HeroParallaxProps) {
                           alt={`${artwork.title} by Utagawa Hiroshige`}
                           fill
                           className="object-cover"
-                          sizes="80vw"
+                          sizes="(max-width: 768px) 80vw, 50vw"
+                          quality={85}
                           priority={i === 0}
                         />
                         {/* Overlay for depth */}

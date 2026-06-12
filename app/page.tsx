@@ -36,7 +36,6 @@ export default async function HomePage() {
               key={artwork.id}
               artwork={artwork}
               index={index}
-              priority={index < 4}
             />
           ))}
         </div>
@@ -106,7 +105,7 @@ export default async function HomePage() {
             </p>
             <div className="mt-6">
               <a
-                href="/work?series=T%C5%8Dkaid%C5%8D"
+                href="/work?series=Fifty-Three+Stations+of+the+Tōkaidō"
                 className="text-xs uppercase tracking-widest text-vermillion hover:text-sumi transition-colors duration-fast"
               >
                 View Series →
@@ -131,7 +130,7 @@ export default async function HomePage() {
             </p>
             <div className="mt-6">
               <a
-                href="/work?series=Edo"
+                href="/work?series=One+Hundred+Famous+Views+of+Edo"
                 className="text-xs uppercase tracking-widest text-vermillion hover:text-sumi transition-colors duration-fast"
               >
                 View Series →

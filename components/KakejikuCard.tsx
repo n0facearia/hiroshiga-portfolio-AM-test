@@ -32,11 +32,6 @@ export function KakejikuCard({
         ease: [0.16, 1, 0.3, 1],
         delay: index * 0.1,
       }}
-      whileHover={{
-        scale: 1.02,
-        rotate: Math.random() > 0.5 ? 1 : -1,
-        transition: { duration: 0.2, ease: 'easeOut' },
-      }}
       onClick={() => onOpen?.(artwork.id)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -57,20 +52,74 @@ export function KakejikuCard({
       <div className="kakejiku-rod-top" />
 
       {/* Mounting + image area */}
-      <div className="kakejiku-mounting">
-        <div className="relative aspect-[4/3] overflow-hidden">
+      <div className="kakejiku-mounting relative">
+        {/* Image with subtle desaturation on hover */}
+        <div className="relative aspect-[3/2] overflow-hidden bg-washi-light/50 transition-all duration-slow group-hover:saturate-[0.85]">
           <Image
             src={artwork.wikimedia_thumb || artwork.wikimedia_url}
             alt={`${artwork.title} by Utagawa Hiroshige${artwork.year ? `, ${artwork.year}` : ''}`}
             fill
-            className="object-cover transition-transform duration-slow group-hover:scale-105"
+            className="object-contain p-2"
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            quality={85}
             priority={priority}
           />
 
-          {/* Hover overlay — subtle ink wash */}
+          {/* Ink wash overlay on hover */}
           <div className="absolute inset-0 bg-sumi/0 transition-colors duration-normal group-hover:bg-sumi/[0.04]" />
         </div>
+
+        {/* Seal stamp — fades in on hover at bottom-right corner */}
+        <motion.div
+          className="absolute bottom-3 right-3 z-10"
+          initial={{ opacity: 0, scale: 0.5 }}
+          whileHover={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          aria-hidden="true"
+        >
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            className="drop-shadow-sm"
+          >
+            {/* Seal border */}
+            <rect
+              x="0.5"
+              y="0.5"
+              width="27"
+              height="27"
+              rx="2"
+              fill="var(--vermillion)"
+              stroke="var(--vermillion)"
+              strokeWidth="0.5"
+            />
+            {/* Inner border */}
+            <rect
+              x="3"
+              y="3"
+              width="22"
+              height="22"
+              rx="1.5"
+              fill="none"
+              stroke="var(--washi)"
+              strokeWidth="0.5"
+              opacity="0.7"
+            />
+            {/* Kanji character 蔵 (treasure/storehouse) */}
+            <text
+              x="14"
+              y="18.5"
+              textAnchor="middle"
+              fill="var(--washi)"
+              fontSize="14"
+              fontFamily="serif"
+              fontWeight="bold"
+            >
+              蔵
+            </text>
+          </svg>
+        </motion.div>
       </div>
 
       {/* Bottom wooden rod */}

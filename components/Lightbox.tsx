@@ -92,14 +92,15 @@ export function Lightbox({
             </svg>
           </button>
 
-          {/* Image */}
-          <div className="relative w-full md:w-3/5 aspect-[4/3] md:aspect-auto md:min-h-[60vh]">
+          {/* Image — full resolution, no cropping */}
+          <div className="relative w-full md:w-3/5 aspect-[3/2] md:aspect-auto md:min-h-[60vh]">
             <Image
               src={artwork.wikimedia_url}
               alt={`${artwork.title} by Utagawa Hiroshige${artwork.year ? `, ${artwork.year}` : ''}`}
               fill
-              className="object-contain bg-washi"
+              className="object-contain bg-washi p-4"
               sizes="(max-width: 768px) 100vw, 60vw"
+              quality={90}
               priority
             />
           </div>

@@ -7,29 +7,19 @@ import db from './db'
  */
 export function createTables(): void {
   db.exec(`
-    -- artworks: stores each woodblock print by Utagawa Hiroshige
-    -- Images served from Wikimedia Commons URLs (public domain, no API key needed)
     CREATE TABLE IF NOT EXISTS artworks (
       id              INTEGER PRIMARY KEY AUTOINCREMENT,
-      -- title: English name of the print, used for display and SEO
       title           TEXT NOT NULL,
-      -- title_jp: Japanese kanji/kana title, nullable because not all prints have a verified JP title
       title_jp        TEXT,
-      -- series: exact series name, used for gallery filtering and grouping
       series          TEXT NOT NULL,
-      -- year: publication year, used for chronology and timeline display
       year            INTEGER,
-      -- era: Japanese historical era (e.g. 'Edo period'), provides historical context
       era             TEXT,
-      -- wikimedia_url: full-resolution image URL from Wikimedia Commons, used in lightbox and detail views
       wikimedia_url   TEXT NOT NULL,
-      -- thumbnail_url: 400px-wide thumbnail URL from Wikimedia Commons, used in gallery grids
       thumbnail_url   TEXT NOT NULL,
-      -- description: 2-3 sentence description of scene, technique, and historical context
       description     TEXT,
-      -- is_featured: 1 = featured on homepage hero, 0 = gallery only. Partial index below optimizes the featured query
+      source_url      TEXT,
+      attribution     TEXT,
       is_featured     INTEGER NOT NULL DEFAULT 0,
-      -- created_at: ISO-8601 timestamp of when the row was inserted, used for ordering and admin
       created_at      TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
@@ -59,4 +49,13 @@ export function createTables(): void {
     CREATE INDEX IF NOT EXISTS idx_contact_messages_created_at
       ON contact_messages(created_at);
   `)
+
+  // Migrations for columns added after initial schema
+  for (const col of ['source_url', 'attribution']) {
+    try {
+      db.exec(`ALTER TABLE artworks ADD COLUMN ${col} TEXT`)
+    } catch {
+      // Column already exists
+    }
+  }
 }

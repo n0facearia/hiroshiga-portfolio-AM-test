@@ -51,26 +51,56 @@ export function Navigation() {
         </Link>
 
         {/* Desktop nav — right */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-2">
           {navLinks.map((link) => {
             const isActive = pathname === link.href
             return (
-              <Link
+              <motion.div
                 key={link.href}
-                href={link.href}
-                className={`relative text-sm uppercase tracking-[0.08em] py-1 transition-colors duration-fast ${
-                  isActive ? 'text-sumi' : 'text-mist hover:text-sumi'
-                }`}
+                className="relative"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               >
-                {link.label}
-                {isActive && (
+                <Link
+                  href={link.href}
+                  className={`relative block px-3 py-2 text-sm uppercase tracking-[0.08em] transition-colors duration-fast ${
+                    isActive ? 'text-sumi' : 'text-mist hover:text-sumi'
+                  }`}
+                >
+                  {/* Kakejiku top rod — appears on hover */}
                   <motion.div
-                    layoutId="nav-underline"
-                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-vermillion"
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    className="absolute top-0 left-1 right-1 h-[3px] rounded-b-sm"
+                    style={{ background: 'linear-gradient(180deg, var(--sumi-deep) 0%, var(--sumi-deep) 50%, transparent 100%)' }}
+                    initial={{ scaleY: 0, opacity: 0 }}
+                    whileHover={{ scaleY: 1, opacity: 1 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
                   />
-                )}
-              </Link>
+                  {/* Kakejiku bottom rod — appears on hover */}
+                  <motion.div
+                    className="absolute bottom-0 left-1 right-1 h-[3px] rounded-t-sm"
+                    style={{ background: 'linear-gradient(0deg, var(--sumi-deep) 0%, var(--sumi-deep) 50%, transparent 100%)' }}
+                    initial={{ scaleY: 0, opacity: 0 }}
+                    whileHover={{ scaleY: 1, opacity: 1 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                  />
+                  {/* Subtle background fill on hover */}
+                  <motion.div
+                    className="absolute inset-0 -z-10 rounded-ink"
+                    style={{ background: 'rgba(var(--washi-rgb), 0.6)' }}
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.25 }}
+                  />
+                  {link.label}
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-underline"
+                      className="absolute -bottom-1 left-3 right-3 h-[2px] bg-vermillion"
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    />
+                  )}
+                </Link>
+              </motion.div>
             )
           })}
 

@@ -6,8 +6,12 @@ import { motion } from 'framer-motion'
 
 const filters = [
   { value: 'all', label: 'All', labelJp: '全て' },
-  { value: 'Tōkaidō', label: 'Tōkaidō', labelJp: '東海道' },
-  { value: 'Edo', label: 'Famous Views of Edo', labelJp: '江戸名所' },
+  { value: 'One Hundred Famous Views of Edo', label: 'Edo', labelJp: '江戸名所' },
+  { value: 'Fifty-Three Stations of the Tōkaidō', label: 'Tōkaidō', labelJp: '東海道' },
+  { value: 'Eight Views of Ōmi', label: 'Ōmi', labelJp: '近江八景' },
+  { value: 'Famous Places of Kyōto', label: 'Kyōto', labelJp: '京都名所' },
+  { value: 'Thirty-six Views of Mount Fuji', label: 'Fuji', labelJp: '富嶽三十六景' },
+  { value: 'The Sixty-nine Stations of the Kisokaidō', label: 'Kisokaidō', labelJp: '木曽街道' },
 ]
 
 export function FilterBar() {
