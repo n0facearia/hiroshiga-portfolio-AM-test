@@ -2,6 +2,8 @@
 
 An immersive digital gallery showcasing the woodblock print masterpieces of **Utagawa Hiroshige** (1797–1858), built with a sumi-e (ink wash) inspired design aesthetic.
 
+**Built with [AM](https://am.ai) — an AI agent that assisted in design, implementation, and testing throughout the project.**
+
 Artwork images sourced from [The Metropolitan Museum of Art's Open Access collection](https://www.metmuseum.org/about-the-met/policies-and-documents/open-access) via Wikimedia Commons.
 
 ![Homepage hero with 2.5D parallax scene](./screenshots/hero-parallax.png)
