@@ -2,9 +2,42 @@
 
 An immersive digital gallery showcasing the woodblock print masterpieces of **Utagawa Hiroshige** (1797–1858), built with a sumi-e (ink wash) inspired design aesthetic.
 
-**Built with [AM](https://am.ai) — an AI agent that assisted in design, implementation, and testing throughout the project.**
-
 Artwork images sourced from [The Metropolitan Museum of Art's Open Access collection](https://www.metmuseum.org/about-the-met/policies-and-documents/open-access) via Wikimedia Commons.
+
+---
+
+## Built with AM
+
+This entire project was built collaboratively with **[AM](https://am.ai)** — an AI agent that handled architecture, implementation, testing, and iterative refinement through natural language conversation.
+
+### How it was made
+
+The project started with a design spec and was built incrementally through conversation with AM. No code was written by hand — every file was generated, reviewed, and refined by the AI agent based on human direction and feedback.
+
+**Design & Architecture:**
+- AM designed the Next.js App Router page structure, Express API routes, and SQLite schema
+- Chose the tech stack (Tailwind + DaisyUI for theming, Framer Motion for animations, better-sqlite3 for the database)
+- Established the component tree — 22 components across primitives, compositions, and page-level tiers
+- Defined the TypeScript types shared between frontend and backend
+
+**Implementation:**
+- Generated every React component including the 2.5D parallax hero (`HeroParallax`), kakejiku scroll cards (`KakejikuCard`), full-screen lightbox, masonry gallery, filter bar, contact form, navigation, footer, custom cursor, scroll progress, page transitions, and the ink-wash background
+- Built the Express server with 6 API endpoints (artworks CRUD, artist info, contact form submission)
+- Wrote the SQLite schema, seed data (37 artworks from the Met Museum collection), and data fetching layer with client-side fallbacks
+- Implemented light/dark theme system with localStorage persistence, custom sumi-e color palette in CSS variables, and a flash-of-wrong-theme prevention script
+
+**Testing & Quality:**
+- AM wrote all tests — Vitest unit tests for data fetching and server route integration tests using supertest
+- Iteratively fixed failing tests and debugged issues (Vitest async mock deadlock, TypeScript strict mode errors, API response shape mismatches)
+- Ran linting, type checking, and test suites to verify every change
+
+**Design & Polish:**
+- Contrast fixes were applied systematically — AM tested color combinations against WCAG AA standards and adjusted text opacity across the entire site
+- The hero parallax backdrop opacity was tuned so titles remain readable over the busy 2.5D scene layers
+- Animations were refined (ink-bleed easing curves, scroll-reveal variants, spring physics for hover effects)
+- Dark mode colors were individually calibrated for each CSS variable
+
+The entire process — from blank canvas to deployed site — was driven through natural language. AM wrote, tested, and refined every line of code.
 
 ![Homepage hero with 2.5D parallax scene](./screenshots/hero-parallax.png)
 
